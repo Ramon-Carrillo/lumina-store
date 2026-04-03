@@ -1,0 +1,310 @@
+// Prisma schema for Lumina — premium wireless earbuds & audio accessories
+
+generator client {
+  provider = "prisma-client"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ─── Enums ───────────────────────────────────────────────────────────────────
+
+enum Role {
+  CUSTOMER
+  ADMIN
+}
+
+enum OrderStatus {
+  PENDING
+  PROCESSING
+  PAID
+  SHIPPED
+  DELIVERED
+  CANCELLED
+  REFUNDED
+}
+
+enum PaymentStatus {
+  UNPAID
+  PAID
+  REFUNDED
+  PARTIALLY_REFUNDED
+}
+
+// ─── User & Auth ─────────────────────────────────────────────────────────────
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  emailVerified DateTime?
+  name          String?
+  image         String?
+  passwordHash  String?
+  role          Role      @default(CUSTOMER)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  addresses     Address[]
+  cart          Cart?
+  orders        Order[]
+  reviews       Review[]
+  wishlist      WishlistItem[]
+}
+
+// ─── Catalogue ───────────────────────────────────────────────────────────────
+
+model Category {
+  id          String     @id @default(cuid())
+  name        String
+  slug        String     @unique
+  description String?
+  image       String?
+
+  // Self-referential tree (e.g. Earbuds > TWS, Neckband)
+  parentId    String?
+  parent      Category?  @relation("CategoryTree", fields: [parentId], references: [id])
+  children    Category[] @relation("CategoryTree")
+
+  products    Product[]
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  @@index([slug])
+}
+
+model Product {
+  id          String   @id @default(cuid())
+  name        String
+  slug        String   @unique
+  description String
+  price       Decimal  @db.Decimal(10, 2)
+  compareAt   Decimal? @db.Decimal(10, 2) // original price for sale badge
+  stock       Int      @default(0)
+  sku         String?  @unique
+  featured    Boolean  @default(false)
+  published   Boolean  @default(true)
+
+  // ── Audio specs ────────────────────────────────────────────────────────────
+  // Connectivity: ["Bluetooth 5.3", "USB-C", "3.5mm Jack"]
+  connectivity      String[]
+  batteryLife       Int?     // hours per charge (buds/headphones)
+  chargingCaseLife  Int?     // extra hours from charging case (TWS)
+  chargingTime      Float?   // hours to full charge
+  quickCharge       Boolean  @default(false) // e.g. 10 min → 2 hr playback
+  noiseCancellation Boolean  @default(false)
+  transparencyMode  Boolean  @default(false)
+  waterResistance   String?  // IPX4, IPX5, IP55 …
+  driverSize        Float?   // mm
+  frequencyResponse String?  // "20 Hz – 20 kHz"
+  impedance         Int?     // Ω
+  sensitivity       Float?   // dB SPL/mW
+  weight            Float?   // grams (per earbud or headphone unit)
+  // Available colour options: ["Midnight Black", "Pearl White", "Navy"]
+  colors            String[]
+  // What's in the box: ["Earbuds", "Charging Case", "USB-C Cable", "Ear Tips (S/M/L)"]
+  inBox             String[]
+  warranty          Int      @default(12) // months
+
+  // ── SEO ───────────────────────────────────────────────────────────────────
+  metaTitle       String?
+  metaDescription String?
+
+  // ── Relations ─────────────────────────────────────────────────────────────
+  categoryId    String
+  category      Category       @relation(fields: [categoryId], references: [id])
+  images        ProductImage[]
+  variants      ProductVariant[]
+  reviews       Review[]
+  cartItems     CartItem[]
+  orderItems    OrderItem[]
+  wishlistItems WishlistItem[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([slug])
+  @@index([categoryId])
+  @@index([featured])
+  @@index([published])
+}
+
+model ProductImage {
+  id        String  @id @default(cuid())
+  url       String
+  alt       String?
+  position  Int     @default(0)
+  productId String
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@index([productId])
+}
+
+// Colour / size variants — each can override price & stock
+model ProductVariant {
+  id        String   @id @default(cuid())
+  name      String   // "Midnight Black — Large Ear Tips"
+  sku       String?  @unique
+  price     Decimal? @db.Decimal(10, 2) // null → inherit parent price
+  stock     Int      @default(0)
+  image     String?
+
+  productId  String
+  product    Product    @relation(fields: [productId], references: [id], onDelete: Cascade)
+  cartItems  CartItem[]
+  orderItems OrderItem[]
+
+  @@index([productId])
+}
+
+// ─── Cart (server-side, supports guest + authenticated) ──────────────────────
+
+model Cart {
+  id        String     @id @default(cuid())
+  // authenticated user cart
+  userId    String?    @unique
+  user      User?      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  // guest cart — tied to session cookie
+  sessionId String?    @unique
+  items     CartItem[]
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+}
+
+model CartItem {
+  id        String  @id @default(cuid())
+  quantity  Int     @default(1)
+
+  cartId    String
+  cart      Cart    @relation(fields: [cartId], references: [id], onDelete: Cascade)
+  productId String
+  product   Product @relation(fields: [productId], references: [id])
+  variantId String?
+  variant   ProductVariant? @relation(fields: [variantId], references: [id])
+
+  @@unique([cartId, productId, variantId])
+  @@index([cartId])
+}
+
+// ─── Orders ──────────────────────────────────────────────────────────────────
+
+model Order {
+  id          String        @id @default(cuid())
+  orderNumber String        @unique @default(cuid())
+  status      OrderStatus   @default(PENDING)
+  paymentStatus PaymentStatus @default(UNPAID)
+
+  // Financials (all stored in USD cents equivalent via Decimal)
+  subtotal Decimal @db.Decimal(10, 2)
+  discount Decimal @db.Decimal(10, 2) @default(0)
+  shipping Decimal @db.Decimal(10, 2) @default(0)
+  tax      Decimal @db.Decimal(10, 2) @default(0)
+  total    Decimal @db.Decimal(10, 2)
+
+  // Stripe
+  stripePaymentIntentId String? @unique
+  stripeSessionId       String? @unique
+
+  // Fulfilment
+  shippingAddressId String?
+  shippingAddress   Address? @relation(fields: [shippingAddressId], references: [id])
+  trackingNumber    String?
+  shippedAt         DateTime?
+  deliveredAt       DateTime?
+
+  // Customer — null when guest checkout
+  userId     String?
+  user       User?   @relation(fields: [userId], references: [id])
+  guestEmail String? // captured for guest orders
+
+  items     OrderItem[]
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+
+  @@index([userId])
+  @@index([status])
+  @@index([stripePaymentIntentId])
+}
+
+model OrderItem {
+  id        String  @id @default(cuid())
+  quantity  Int
+  unitPrice Decimal @db.Decimal(10, 2) // price locked at purchase time
+  total     Decimal @db.Decimal(10, 2)
+
+  orderId   String
+  order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId String
+  product   Product @relation(fields: [productId], references: [id])
+  variantId String?
+  variant   ProductVariant? @relation(fields: [variantId], references: [id])
+
+  // Snapshot so order history is accurate if product is later edited
+  productName  String
+  variantName  String?
+  productImage String?
+
+  @@index([orderId])
+}
+
+// ─── Address ─────────────────────────────────────────────────────────────────
+
+model Address {
+  id         String  @id @default(cuid())
+  firstName  String
+  lastName   String
+  company    String?
+  line1      String
+  line2      String?
+  city       String
+  state      String?
+  postalCode String
+  country    String  @default("US")
+  phone      String?
+  isDefault  Boolean @default(false)
+
+  userId    String
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  orders    Order[]
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+}
+
+// ─── Reviews ─────────────────────────────────────────────────────────────────
+
+model Review {
+  id       String  @id @default(cuid())
+  rating   Int     // 1–5
+  title    String?
+  body     String
+  verified Boolean @default(false) // linked to a completed order
+  helpful  Int     @default(0)     // upvotes from other customers
+
+  userId    String
+  user      User    @relation(fields: [userId], references: [id])
+  productId String
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, productId]) // one review per product per user
+  @@index([productId])
+  @@index([rating])
+}
+
+// ─── Wishlist ────────────────────────────────────────────────────────────────
+
+model WishlistItem {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  productId String
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([userId, productId])
+  @@index([userId])
+}
