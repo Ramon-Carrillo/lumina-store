@@ -34,11 +34,13 @@ export const metadata: Metadata = {
     siteName: 'Lumina Store',
     title: 'Lumina Store — Premium Sound, Elevated',
     description: 'Premium wireless earbuds and audio accessories — crafted for audiophiles.',
+    images: [{ url: '/og-image.png', width: 1200, height: 630, alt: 'Lumina Store — Premium Sound, Elevated' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Lumina Store — Premium Sound, Elevated',
     description: 'Premium wireless earbuds and audio accessories — crafted for audiophiles.',
+    images: ['/og-image.png'],
   },
   robots: {
     index: true,
