@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { motion, AnimatePresence } from "framer-motion"
+import { motion, AnimatePresence, type Variants } from "framer-motion"
 import {
   ShoppingCart,
   Menu,
@@ -52,7 +52,7 @@ const NAV_LINKS = [
   { href: "/contact", label: "Contact" },
 ] as const
 
-const dropdownVariants = {
+const dropdownVariants: Variants = {
   hidden:  { opacity: 0, y: -8, scale: 0.97 },
   visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.18, ease: "easeOut" } },
   exit:    { opacity: 0, y: -6, scale: 0.97, transition: { duration: 0.13, ease: "easeIn" } },
