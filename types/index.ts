@@ -12,9 +12,9 @@ export type {
   Address,
   Review,
   WishlistItem,
-} from "@/lib/generated/prisma"
+} from "@/lib/generated/prisma/client"
 
-export { Role, OrderStatus, PaymentStatus } from "@/lib/generated/prisma"
+export { Role, OrderStatus, PaymentStatus } from "@/lib/generated/prisma/client"
 
 // ─── Composed / view types ───────────────────────────────────────────────────
 
@@ -26,7 +26,7 @@ import type {
   Review,
   CartItem,
   OrderItem,
-} from "@/lib/generated/prisma"
+} from "@/lib/generated/prisma/client"
 
 export type ProductWithRelations = Product & {
   images: ProductImage[]
