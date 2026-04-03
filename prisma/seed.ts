@@ -194,8 +194,8 @@ async function main() {
   })
   await prisma.productImage.createMany({
     data: [
-      { productId: air3.id, position: 0, ...img('photo-1646819217378-09b13f8a7c4a', 'Lumina Air 3 earbuds on marble surface') },
-      { productId: air3.id, position: 1, ...img('photo-1608043152269-423dbba4e7e1', 'Lumina Air 3 in-ear profile') },
+      { productId: air3.id, position: 0, ...img('photo-1606220945770-b5b6c2c55bf1', 'Lumina Air 3 earbuds next to open charging case') },
+      { productId: air3.id, position: 1, ...img('photo-1605464315542-bda3e2f4e605', 'Lumina Air 3 earbuds minimalist flat lay') },
     ],
   })
   await prisma.productVariant.createMany({
@@ -569,7 +569,7 @@ async function main() {
   await prisma.productImage.createMany({
     data: [
       { productId: sphere.id, position: 0, ...img('photo-1608043152269-423dbba4e7e1', 'Lumina Sphere portable speaker obsidian') },
-      { productId: sphere.id, position: 1, ...img('photo-1558618047-3c8c76ca7d13', 'Lumina Sphere glowing ambient light') },
+      { productId: sphere.id, position: 1, ...img('photo-1516249255568-f8b6a5a52967', 'Lumina Sphere glowing ambient light') },
     ],
   })
   await prisma.productVariant.createMany({
@@ -875,7 +875,7 @@ async function main() {
   })
   await prisma.productImage.createMany({
     data: [
-      { productId: stack.id, position: 0, ...img('photo-1558618047-3c8c76ca7d13', 'Lumina Stack DAC amp on desk') },
+      { productId: stack.id, position: 0, ...img('photo-1558590987-fec611c944de', 'Lumina Stack DAC amp on desk') },
       { productId: stack.id, position: 1, ...img('photo-1519817650390-64a93db51149', 'Lumina Stack rear connections') },
     ],
   })

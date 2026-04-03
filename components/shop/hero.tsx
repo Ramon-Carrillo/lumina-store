@@ -51,7 +51,7 @@ export function Hero() {
         duration={11}
       />
       <FloatingOrb
-        className="pointer-events-none absolute -right-64 top-1/4 h-[520px] w-[520px] rounded-full bg-purple/10 blur-[120px]"
+        className="pointer-events-none absolute -right-64 top-1/4 h-[520px] w-[520px] rounded-full bg-gold/10 blur-[120px]"
         delay={2.5}
         duration={13}
       />
@@ -67,19 +67,9 @@ export function Hero() {
         className="pointer-events-none absolute inset-0 opacity-40"
         style={{
           backgroundImage:
-            'linear-gradient(oklch(1 0 0 / 3%) 1px, transparent 1px),' +
-            'linear-gradient(90deg, oklch(1 0 0 / 3%) 1px, transparent 1px)',
+            'linear-gradient(oklch(0 0 0 / 5%) 1px, transparent 1px),' +
+            'linear-gradient(90deg, oklch(0 0 0 / 5%) 1px, transparent 1px)',
           backgroundSize: '80px 80px',
-        }}
-      />
-
-      {/* ── Radial vignette ── */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0"
-        style={{
-          background:
-            'radial-gradient(ellipse 80% 60% at 50% 50%, transparent 40%, oklch(0.05 0 0 / 70%) 100%)',
         }}
       />
 
@@ -129,7 +119,7 @@ export function Hero() {
           </Link>
           <Link
             href="/products"
-            className="glass inline-flex items-center justify-center rounded-full px-9 py-4 text-base font-medium text-foreground transition-all duration-200 hover:bg-white/[6%] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+            className="glass inline-flex items-center justify-center rounded-full px-9 py-4 text-base font-medium text-foreground transition-all duration-200 hover:bg-black/[5%] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
           >
             Explore Collection
           </Link>
@@ -154,7 +144,7 @@ export function Hero() {
         animate={{ opacity: 1 }}
         transition={{ delay: 1.4, duration: 0.8 }}
       >
-        <div className="flex h-10 w-6 items-start justify-center rounded-full border border-white/15 p-1.5">
+        <div className="flex h-10 w-6 items-start justify-center rounded-full border border-border p-1.5">
           <motion.div
             className="h-2 w-[3px] rounded-full bg-brand"
             animate={{ y: [0, 14, 0], opacity: [1, 0.3, 1] }}

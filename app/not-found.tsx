@@ -25,7 +25,7 @@ export default function NotFound() {
       {/* ── Ambient background ── */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden>
         <div className="absolute left-[15%] top-[20%] h-[460px] w-[460px] rounded-full bg-brand/6 blur-[100px]" />
-        <div className="absolute right-[10%] bottom-[15%] h-[360px] w-[360px] rounded-full bg-purple/7 blur-[90px]" />
+        <div className="absolute right-[10%] bottom-[15%] h-[360px] w-[360px] rounded-full bg-gold/7 blur-[90px]" />
         <div className="absolute left-1/2 top-1/2 h-[200px] w-[200px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-brand/5 blur-[60px]" />
         {/* Subtle grid */}
         <div

@@ -114,7 +114,7 @@ export function ProductCard({ product }: { product: ProductCardData }) {
               </span>
             )}
             {product.featured && discount === null && (
-              <span className="rounded-full bg-purple px-2.5 py-0.5 text-[11px] font-bold text-white shadow">
+              <span className="rounded-full bg-brand/10 px-2.5 py-0.5 text-[11px] font-bold text-brand shadow-none">
                 Featured
               </span>
             )}

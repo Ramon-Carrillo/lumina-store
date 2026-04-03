@@ -14,7 +14,13 @@
       "WebFetch(domain:raw.githubusercontent.com)",
       "WebFetch(domain:webcache.googleusercontent.com)",
       "WebFetch(domain:source.unsplash.com)",
-      "Bash(npm run:*)"
+      "Bash(npm run:*)",
+      "Bash(curl:*)",
+      "WebFetch(domain:www.pexels.com)",
+      "WebFetch(domain:web.archive.org)",
+      "WebFetch(domain:dev.to)",
+      "WebFetch(domain:help.unsplash.com)",
+      "WebFetch(domain:brandcolors.net)"
     ]
   }
 }

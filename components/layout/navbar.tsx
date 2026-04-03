@@ -1,14 +1,11 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useState } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { useTheme } from "next-themes"
 import { motion, AnimatePresence } from "framer-motion"
 import {
   ShoppingCart,
-  Sun,
-  Moon,
   Menu,
   X,
   Headphones,
@@ -24,7 +21,6 @@ import {
   MonitorSpeaker,
   Sliders,
 } from "lucide-react"
-import { Button } from "@/components/ui/button"
 import {
   Sheet,
   SheetContent,
@@ -35,89 +31,31 @@ import {
 import { useCart } from "@/components/providers/cart-provider"
 import { CartDrawer } from "@/components/shop/cart-drawer"
 import { cn } from "@/lib/utils"
+import { useRef } from "react"
 
 // ─── Category config ──────────────────────────────────────────────────────────
 
 const CATEGORIES = [
-  {
-    slug:        "true-wireless",
-    name:        "True Wireless",
-    description: "ANC earbuds for every moment",
-    icon:        Music,
-  },
-  {
-    slug:        "headphones",
-    name:        "Headphones",
-    description: "Over-ear & on-ear immersion",
-    icon:        Headphones,
-  },
-  {
-    slug:        "sport",
-    name:        "Sport",
-    description: "Sweat-proof, built to move",
-    icon:        Zap,
-  },
-  {
-    slug:        "speakers",
-    name:        "Speakers",
-    description: "Portable & home audio",
-    icon:        Volume2,
-  },
-  {
-    slug:        "gaming",
-    name:        "Gaming",
-    description: "Win without distraction",
-    icon:        Gamepad2,
-  },
-  {
-    slug:        "earphones",
-    name:        "Earphones",
-    description: "Wired precision for audiophiles",
-    icon:        AudioLines,
-  },
-  {
-    slug:        "soundbars",
-    name:        "Soundbars",
-    description: "Cinematic sound for your space",
-    icon:        MonitorSpeaker,
-  },
-  {
-    slug:        "dacs-amps",
-    name:        "DACs & Amps",
-    description: "Power your listening setup",
-    icon:        Sliders,
-  },
-  {
-    slug:        "accessories",
-    name:        "Accessories",
-    description: "Cables, cases & ear tips",
-    icon:        Package,
-  },
+  { slug: "true-wireless", name: "True Wireless", description: "ANC earbuds for every moment",      icon: Music         },
+  { slug: "headphones",    name: "Headphones",    description: "Over-ear & on-ear immersion",        icon: Headphones    },
+  { slug: "sport",         name: "Sport",         description: "Sweat-proof, built to move",         icon: Zap           },
+  { slug: "speakers",      name: "Speakers",      description: "Portable & home audio",              icon: Volume2       },
+  { slug: "gaming",        name: "Gaming",        description: "Win without distraction",            icon: Gamepad2      },
+  { slug: "earphones",     name: "Earphones",     description: "Wired precision for audiophiles",    icon: AudioLines    },
+  { slug: "soundbars",     name: "Soundbars",     description: "Cinematic sound for your space",     icon: MonitorSpeaker},
+  { slug: "dacs-amps",     name: "DACs & Amps",   description: "Power your listening setup",         icon: Sliders       },
+  { slug: "accessories",   name: "Accessories",   description: "Cables, cases & ear tips",           icon: Package       },
 ] as const
-
-// ─── Other nav links ──────────────────────────────────────────────────────────
 
 const NAV_LINKS = [
   { href: "/about",   label: "About"   },
   { href: "/contact", label: "Contact" },
 ] as const
 
-// ─── Dropdown variants ────────────────────────────────────────────────────────
-
 const dropdownVariants = {
   hidden:  { opacity: 0, y: -8, scale: 0.97 },
-  visible: {
-    opacity:    1,
-    y:          0,
-    scale:      1,
-    transition: { duration: 0.18, ease: "easeOut" },
-  },
-  exit: {
-    opacity:    0,
-    y:          -6,
-    scale:      0.97,
-    transition: { duration: 0.13, ease: "easeIn" },
-  },
+  visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.18, ease: "easeOut" } },
+  exit:    { opacity: 0, y: -6, scale: 0.97, transition: { duration: 0.13, ease: "easeIn" } },
 }
 
 // ─── Shop dropdown ────────────────────────────────────────────────────────────
@@ -125,48 +63,36 @@ const dropdownVariants = {
 function ShopDropdown({ pathname }: { pathname: string }) {
   const [open, setOpen] = useState(false)
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
-
-  const isShopActive =
-    pathname.startsWith("/products") || pathname.startsWith("/categories")
+  const isShopActive = pathname.startsWith("/products") || pathname.startsWith("/categories")
 
   function handleMouseEnter() {
     if (closeTimer.current) clearTimeout(closeTimer.current)
     setOpen(true)
   }
-
   function handleMouseLeave() {
     closeTimer.current = setTimeout(() => setOpen(false), 120)
   }
 
   return (
-    <div
-      className="relative"
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-    >
-      {/* Trigger */}
+    <div className="relative" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
       <button
         className={cn(
           "flex items-center gap-1 text-sm font-medium transition-colors",
           "relative after:absolute after:-bottom-0.5 after:left-0 after:h-px after:w-full",
-          "after:origin-left after:bg-primary after:transition-transform after:duration-200",
+          "after:origin-left after:bg-white after:transition-transform after:duration-200",
           open || isShopActive
-            ? "text-foreground after:scale-x-100"
-            : "text-muted-foreground after:scale-x-0 hover:text-foreground hover:after:scale-x-100"
+            ? "text-white after:scale-x-100"
+            : "text-white/65 after:scale-x-0 hover:text-white hover:after:scale-x-100"
         )}
         aria-expanded={open}
         aria-haspopup="true"
       >
         Shop
-        <motion.span
-          animate={{ rotate: open ? 180 : 0 }}
-          transition={{ duration: 0.2 }}
-        >
+        <motion.span animate={{ rotate: open ? 180 : 0 }} transition={{ duration: 0.2 }}>
           <ChevronDown className="size-3.5" />
         </motion.span>
       </button>
 
-      {/* Dropdown panel */}
       <AnimatePresence>
         {open && (
           <motion.div
@@ -174,20 +100,14 @@ function ShopDropdown({ pathname }: { pathname: string }) {
             initial="hidden"
             animate="visible"
             exit="exit"
-            className={cn(
-              "absolute left-1/2 top-full mt-3 w-[560px] -translate-x-1/2",
-              "rounded-2xl border border-border bg-card shadow-2xl",
-              "overflow-hidden"
-            )}
+            className="absolute left-1/2 top-full mt-3 w-[560px] -translate-x-1/2 overflow-hidden rounded-2xl border border-border bg-card shadow-2xl"
           >
-            {/* Header */}
             <div className="border-b border-border px-5 py-3.5">
               <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
                 Browse by category
               </p>
             </div>
 
-            {/* Category grid */}
             <div className="grid grid-cols-3 gap-px bg-border p-px">
               {CATEGORIES.map(({ slug, name, description, icon: Icon }) => {
                 const active = pathname.includes(`category=${slug}`)
@@ -197,43 +117,30 @@ function ShopDropdown({ pathname }: { pathname: string }) {
                     href={`/products?category=${slug}`}
                     onClick={() => setOpen(false)}
                     className={cn(
-                      "group flex items-start gap-3 bg-card px-4 py-3.5 transition-colors",
-                      "hover:bg-primary/5",
+                      "group flex items-start gap-3 bg-card px-4 py-3.5 transition-colors hover:bg-primary/5",
                       active && "bg-primary/8"
                     )}
                   >
-                    <span
-                      className={cn(
-                        "mt-0.5 flex size-8 shrink-0 items-center justify-center rounded-lg",
-                        "bg-primary/10 transition-colors group-hover:bg-primary/20",
-                        active && "bg-primary/20"
-                      )}
-                    >
+                    <span className={cn(
+                      "mt-0.5 flex size-8 shrink-0 items-center justify-center rounded-lg",
+                      "bg-primary/10 transition-colors group-hover:bg-primary/20",
+                      active && "bg-primary/20"
+                    )}>
                       <Icon className="size-4 text-primary" />
                     </span>
                     <span>
-                      <span className="block text-sm font-medium text-foreground">
-                        {name}
-                      </span>
-                      <span className="block text-xs text-muted-foreground">
-                        {description}
-                      </span>
+                      <span className="block text-sm font-medium text-foreground">{name}</span>
+                      <span className="block text-xs text-muted-foreground">{description}</span>
                     </span>
                   </Link>
                 )
               })}
             </div>
 
-            {/* Footer — view all */}
             <Link
               href="/products"
               onClick={() => setOpen(false)}
-              className={cn(
-                "flex items-center justify-between px-5 py-3.5",
-                "border-t border-border text-sm font-medium",
-                "text-muted-foreground transition-colors hover:text-foreground",
-                "group"
-              )}
+              className="group flex items-center justify-between border-t border-border px-5 py-3.5 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
             >
               View all products
               <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
@@ -245,72 +152,19 @@ function ShopDropdown({ pathname }: { pathname: string }) {
   )
 }
 
-// ─── Theme toggle ─────────────────────────────────────────────────────────────
-
-function ThemeToggle() {
-  const { theme, setTheme } = useTheme()
-  const [mounted, setMounted] = useState(false)
-
-  useEffect(() => setMounted(true), [])
-
-  if (!mounted) {
-    return <Button variant="ghost" size="icon" className="size-9 shrink-0" />
-  }
-
-  const isDark = theme === "dark"
-
-  return (
-    <Button
-      variant="ghost"
-      size="icon"
-      className="size-9 shrink-0"
-      onClick={() => setTheme(isDark ? "light" : "dark")}
-      aria-label="Toggle theme"
-    >
-      <AnimatePresence mode="wait" initial={false}>
-        <motion.span
-          key={theme}
-          initial={{ opacity: 0, rotate: -90, scale: 0.8 }}
-          animate={{ opacity: 1, rotate: 0, scale: 1 }}
-          exit={{ opacity: 0, rotate: 90, scale: 0.8 }}
-          transition={{ duration: 0.18 }}
-          className="flex items-center justify-center"
-        >
-          {isDark ? (
-            <Sun className="size-4 text-muted-foreground" />
-          ) : (
-            <Moon className="size-4 text-muted-foreground" />
-          )}
-        </motion.span>
-      </AnimatePresence>
-    </Button>
-  )
-}
-
 // ─── Desktop nav link ─────────────────────────────────────────────────────────
 
-function NavLink({
-  href,
-  label,
-  pathname,
-}: {
-  href:     string
-  label:    string
-  pathname: string
-}) {
+function NavLink({ href, label, pathname }: { href: string; label: string; pathname: string }) {
   const active = pathname === href || pathname.startsWith(href + "/")
-
   return (
     <Link
       href={href}
       className={cn(
         "relative text-sm font-medium transition-colors",
         "after:absolute after:-bottom-0.5 after:left-0 after:h-px after:w-full",
-        "after:origin-left after:scale-x-0 after:bg-primary after:transition-transform after:duration-200",
-        "hover:text-foreground hover:after:scale-x-100",
-        active
-          ? "text-foreground after:scale-x-100"
-          : "text-muted-foreground"
+        "after:origin-left after:scale-x-0 after:bg-white after:transition-transform after:duration-200",
+        "hover:text-white hover:after:scale-x-100",
+        active ? "text-white after:scale-x-100" : "text-white/65"
       )}
     >
       {label}
@@ -322,7 +176,6 @@ function NavLink({
 
 function MobileCategoryList({ pathname }: { pathname: string }) {
   const [open, setOpen] = useState(false)
-
   return (
     <li>
       <button
@@ -330,16 +183,11 @@ function MobileCategoryList({ pathname }: { pathname: string }) {
         className={cn(
           "flex w-full items-center justify-between px-6 py-3.5 text-sm font-medium",
           "border-b border-border/50 transition-colors hover:bg-muted hover:text-foreground",
-          pathname.startsWith("/products")
-            ? "text-primary bg-primary/8"
-            : "text-muted-foreground"
+          pathname.startsWith("/products") ? "text-primary bg-primary/8" : "text-muted-foreground"
         )}
       >
         Shop
-        <motion.span
-          animate={{ rotate: open ? 180 : 0 }}
-          transition={{ duration: 0.2 }}
-        >
+        <motion.span animate={{ rotate: open ? 180 : 0 }} transition={{ duration: 0.2 }}>
           <ChevronDown className="size-4 opacity-60" />
         </motion.span>
       </button>
@@ -353,21 +201,17 @@ function MobileCategoryList({ pathname }: { pathname: string }) {
             transition={{ duration: 0.22, ease: "easeInOut" }}
             className="overflow-hidden bg-muted/30"
           >
-            {/* All products */}
             <Link
               href="/products"
               className={cn(
                 "flex items-center gap-3 px-6 py-2.5 text-sm transition-colors",
                 "border-b border-border/30 hover:text-foreground",
-                pathname === "/products"
-                  ? "font-semibold text-primary"
-                  : "text-muted-foreground"
+                pathname === "/products" ? "font-semibold text-primary" : "text-muted-foreground"
               )}
             >
               <ArrowRight className="size-3.5 shrink-0" />
               All Products
             </Link>
-
             {CATEGORIES.map(({ slug, name, icon: Icon }) => {
               const active = pathname.includes(`category=${slug}`)
               return (
@@ -377,9 +221,7 @@ function MobileCategoryList({ pathname }: { pathname: string }) {
                   className={cn(
                     "flex items-center gap-3 px-6 py-2.5 text-sm transition-colors",
                     "border-b border-border/30 last:border-b-0 hover:text-foreground",
-                    active
-                      ? "font-semibold text-primary"
-                      : "text-muted-foreground"
+                    active ? "font-semibold text-primary" : "text-muted-foreground"
                   )}
                 >
                   <Icon className="size-3.5 shrink-0 text-primary/70" />
@@ -398,45 +240,25 @@ function MobileCategoryList({ pathname }: { pathname: string }) {
 
 export function Navbar() {
   const pathname    = usePathname()
-  const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 12)
-    window.addEventListener("scroll", onScroll, { passive: true })
-    return () => window.removeEventListener("scroll", onScroll)
-  }, [])
 
   useEffect(() => setMobileOpen(false), [pathname])
 
   return (
-    <header
-      className={cn(
-        "fixed inset-x-0 top-0 z-50 transition-all duration-300",
-        scrolled
-          ? "border-b border-border bg-background/80 backdrop-blur-xl shadow-[0_1px_0_0_oklch(1_0_0/6%)]"
-          : "bg-transparent"
-      )}
-    >
+    <header className="fixed inset-x-0 top-0 z-50 bg-black border-b border-white/10">
       <nav className="mx-auto flex h-16 max-w-7xl items-center gap-6 px-4 sm:px-6 lg:px-8">
 
         {/* ── Logo ── */}
-        <Link
-          href="/"
-          className="flex shrink-0 items-center gap-2 text-foreground"
-          aria-label="Lumina home"
-        >
-          <span className="flex size-7 items-center justify-center rounded-lg bg-primary">
-            <Headphones className="size-4 text-primary-foreground" />
+        <Link href="/" className="flex shrink-0 items-center gap-2 text-white" aria-label="Lumina home">
+          <span className="flex size-7 items-center justify-center rounded-lg bg-white">
+            <Headphones className="size-4 text-black" />
           </span>
           <span className="text-lg font-bold tracking-tight">Lumina</span>
         </Link>
 
         {/* ── Desktop links ── */}
         <ul className="hidden items-center gap-8 md:flex">
-          <li>
-            <ShopDropdown pathname={pathname} />
-          </li>
+          <li><ShopDropdown pathname={pathname} /></li>
           {NAV_LINKS.map(({ href, label }) => (
             <li key={href}>
               <NavLink href={href} label={label} pathname={pathname} />
@@ -446,17 +268,15 @@ export function Navbar() {
 
         {/* ── Right actions ── */}
         <div className="ml-auto flex items-center gap-1">
-          <ThemeToggle />
-          <CartDrawer />
+          <CartDrawer triggerClassName="text-white hover:bg-white/10 hover:text-white" />
 
           {/* ── Mobile menu trigger ── */}
           <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
             <SheetTrigger
               className={cn(
                 "inline-flex size-9 items-center justify-center rounded-lg",
-                "border border-transparent text-sm font-medium transition-all",
-                "hover:bg-muted hover:text-foreground md:hidden",
-                "focus-visible:ring-2 focus-visible:ring-ring/50 outline-none"
+                "border border-transparent text-white transition-all md:hidden",
+                "hover:bg-white/10 focus-visible:ring-2 focus-visible:ring-white/30 outline-none"
               )}
               aria-label="Open menu"
             >
@@ -469,20 +289,13 @@ export function Navbar() {
                   transition={{ duration: 0.15 }}
                   className="flex items-center justify-center"
                 >
-                  {mobileOpen ? (
-                    <X className="size-5" />
-                  ) : (
-                    <Menu className="size-5" />
-                  )}
+                  {mobileOpen ? <X className="size-5" /> : <Menu className="size-5" />}
                 </motion.span>
               </AnimatePresence>
             </SheetTrigger>
 
             {/* ── Mobile drawer ── */}
-            <SheetContent
-              side="right"
-              className="w-72 border-l border-border bg-card px-0"
-            >
+            <SheetContent side="right" className="w-72 border-l border-border bg-card px-0">
               <SheetHeader className="border-b border-border px-6 pb-4">
                 <SheetTitle className="flex items-center gap-2 text-left">
                   <span className="flex size-7 items-center justify-center rounded-lg bg-primary">
@@ -493,13 +306,9 @@ export function Navbar() {
               </SheetHeader>
 
               <ul className="mt-2 flex flex-col">
-                {/* Shop with expandable categories */}
                 <MobileCategoryList pathname={pathname} />
-
-                {/* Other links */}
                 {NAV_LINKS.map(({ href, label }, i) => {
-                  const active =
-                    pathname === href || pathname.startsWith(href + "/")
+                  const active = pathname === href || pathname.startsWith(href + "/")
                   return (
                     <motion.li
                       key={href}
@@ -513,9 +322,7 @@ export function Navbar() {
                           "flex items-center justify-between px-6 py-3.5 text-sm font-medium",
                           "border-b border-border/50 transition-colors",
                           "hover:bg-muted hover:text-foreground",
-                          active
-                            ? "text-primary bg-primary/8"
-                            : "text-muted-foreground"
+                          active ? "text-primary bg-primary/8" : "text-muted-foreground"
                         )}
                       >
                         {label}
@@ -526,7 +333,6 @@ export function Navbar() {
                 })}
               </ul>
 
-              {/* Mobile cart link */}
               <div className="mt-auto border-t border-border px-6 pt-4">
                 <Link
                   href="/cart"

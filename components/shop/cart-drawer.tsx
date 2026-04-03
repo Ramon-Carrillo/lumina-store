@@ -65,7 +65,7 @@ const badgeVariants: Variants = {
 
 // ─── CartDrawer ───────────────────────────────────────────────────────────────
 
-export function CartDrawer() {
+export function CartDrawer({ triggerClassName }: { triggerClassName?: string }) {
   const { items, total, removeItem, updateQty, clearCart } = useCart()
 
   // useOptimistic: items is the real (settled) state. During a startTransition,
@@ -110,7 +110,8 @@ export function CartDrawer() {
           'relative flex size-9 shrink-0 items-center justify-center rounded-lg',
           'text-muted-foreground transition-colors',
           'hover:bg-muted hover:text-foreground',
-          'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring'
+          'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
+          triggerClassName
         )}
         aria-label={`Open cart — ${optimisticCount} item${optimisticCount !== 1 ? 's' : ''}`}
       >

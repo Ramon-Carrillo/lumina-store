@@ -2,9 +2,6 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
-/* ─── Dark-class variant ─────────────────────────────────────────────────── */
-@custom-variant dark (&:is(.dark *));
-
 /* ─── Design token → Tailwind utility bridge ─────────────────────────────── */
 @theme inline {
   /* Typography */
@@ -39,14 +36,14 @@
   --color-input:               var(--input);
   --color-ring:                var(--ring);
 
-  /* Brand palette as direct utilities: bg-brand, text-brand, etc. */
+  /* Brand palette */
   --color-brand:               var(--brand);
   --color-brand-muted:         var(--brand-muted);
   --color-brand-glow:          var(--brand-glow);
   --color-surface:             var(--surface);
   --color-surface-raised:      var(--surface-raised);
-  --color-purple:              var(--purple);
-  --color-purple-muted:        var(--purple-muted);
+  --color-gold:                var(--gold);
+  --color-gold-muted:          var(--gold-muted);
 
   /* Sidebar */
   --color-sidebar:                    var(--sidebar);
@@ -60,112 +57,66 @@
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   DARK THEME  (default — dark-first)
+   SONY-INSPIRED PALETTE  — white body · black nav/footer · orange accent
    ═══════════════════════════════════════════════════════════════════════════ */
 :root {
-  /* ── Brand ── */
-  --brand:         oklch(0.52 0.22 268);   /* #5060D7 royal blue    */
-  --brand-muted:   oklch(0.38 0.16 268);   /* dimmed brand          */
-  --brand-glow:    oklch(0.52 0.22 268 / 30%);
-  --purple:        oklch(0.58 0.18 290);   /* soft purple accent    */
-  --purple-muted:  oklch(0.35 0.10 290);
+  /* ── Brand: Sony orange #FF6510 — used for accent labels & badges ── */
+  --brand:         oklch(0.63 0.22 38);
+  --brand-muted:   oklch(0.74 0.14 38);
+  --brand-glow:    oklch(0.63 0.22 38 / 15%);
+
+  /* ── Gold: deeper orange-red for gradient end ── */
+  --gold:          oklch(0.53 0.20 32);
+  --gold-muted:    oklch(0.66 0.13 32);
 
   /* ── Base ── */
-  --background:    oklch(0.05 0 0);        /* #0A0A0A deep dark     */
-  --foreground:    oklch(0.96 0.005 280);  /* high-contrast off-white */
+  --background:    oklch(1 0 0);           /* #FFFFFF */
+  --foreground:    oklch(0.08 0 0);        /* #141414 */
 
   /* ── Surfaces ── */
-  --surface:        oklch(0.13 0.04 260);  /* slightly lighter dark  */
-  --surface-raised: oklch(0.19 0.05 260);  /* raised layer          */
-  --card:           oklch(0.17 0.058 258); /* #111E3B dark navy      */
-  --card-foreground: oklch(0.96 0.005 280);
-  --popover:        oklch(0.17 0.058 258);
-  --popover-foreground: oklch(0.96 0.005 280);
+  --surface:        oklch(0.97 0 0);       /* #F7F7F7 */
+  --surface-raised: oklch(0.94 0 0);       /* #F0F0F0 */
+  --card:           oklch(1 0 0);          /* #FFFFFF */
+  --card-foreground: oklch(0.08 0 0);
+  --popover:        oklch(1 0 0);
+  --popover-foreground: oklch(0.08 0 0);
 
-  /* ── Primary (royal blue) ── */
-  --primary:          oklch(0.52 0.22 268);
-  --primary-foreground: oklch(0.98 0 0);
+  /* ── Primary: Sony black — buttons, underlines ── */
+  --primary:          oklch(0.08 0 0);     /* #141414 */
+  --primary-foreground: oklch(1 0 0);      /* white text on black */
 
-  /* ── Secondary (deep navy muted) ── */
-  --secondary:          oklch(0.22 0.045 260);
-  --secondary-foreground: oklch(0.96 0.005 280);
+  /* ── Secondary ── */
+  --secondary:          oklch(0.95 0 0);   /* #F2F2F2 */
+  --secondary-foreground: oklch(0.08 0 0);
 
   /* ── Muted ── */
-  --muted:          oklch(0.20 0.03 258);
-  --muted-foreground: oklch(0.62 0.02 260);
+  --muted:          oklch(0.96 0 0);       /* #F5F5F5 */
+  --muted-foreground: oklch(0.46 0 0);     /* #767676 */
 
-  /* ── Accent (soft purple) ── */
-  --accent:          oklch(0.30 0.08 285);
-  --accent-foreground: oklch(0.96 0.005 280);
+  /* ── Accent ── */
+  --accent:          oklch(0.95 0 0);
+  --accent-foreground: oklch(0.08 0 0);
 
   /* ── Destructive ── */
-  --destructive: oklch(0.60 0.22 25);
+  --destructive: oklch(0.57 0.22 25);
 
   /* ── Borders & inputs ── */
-  --border: oklch(1 0 0 / 9%);
-  --input:  oklch(1 0 0 / 12%);
-  --ring:   oklch(0.52 0.22 268 / 70%);
+  --border: oklch(0 0 0 / 11%);            /* ≈ #E3E3E3 */
+  --input:  oklch(0 0 0 / 11%);
+  --ring:   oklch(0.08 0 0 / 30%);
 
   /* ── Radius ── */
   --radius: 0.5rem;
 
   /* ── Sidebar ── */
-  --sidebar:                    oklch(0.17 0.058 258);
-  --sidebar-foreground:         oklch(0.96 0.005 280);
-  --sidebar-primary:            oklch(0.52 0.22 268);
-  --sidebar-primary-foreground: oklch(0.98 0 0);
-  --sidebar-accent:             oklch(0.22 0.045 260);
-  --sidebar-accent-foreground:  oklch(0.96 0.005 280);
-  --sidebar-border:             oklch(1 0 0 / 9%);
-  --sidebar-ring:               oklch(0.52 0.22 268 / 70%);
-}
-
-/* ═══════════════════════════════════════════════════════════════════════════
-   LIGHT THEME  (opt-in via .light class on <html>)
-   ═══════════════════════════════════════════════════════════════════════════ */
-.light {
-  --brand:         oklch(0.46 0.22 268);
-  --brand-muted:   oklch(0.60 0.16 268);
-  --brand-glow:    oklch(0.46 0.22 268 / 20%);
-  --purple:        oklch(0.52 0.18 290);
-  --purple-muted:  oklch(0.70 0.10 290);
-
-  --background:    oklch(0.98 0 0);
-  --foreground:    oklch(0.10 0.01 260);
-
-  --surface:        oklch(0.95 0 0);
-  --surface-raised: oklch(0.92 0.01 260);
-  --card:           oklch(1 0 0);
-  --card-foreground: oklch(0.10 0.01 260);
-  --popover:        oklch(1 0 0);
-  --popover-foreground: oklch(0.10 0.01 260);
-
-  --primary:          oklch(0.46 0.22 268);
-  --primary-foreground: oklch(0.98 0 0);
-
-  --secondary:          oklch(0.92 0.02 260);
-  --secondary-foreground: oklch(0.20 0.04 260);
-
-  --muted:          oklch(0.94 0.01 260);
-  --muted-foreground: oklch(0.50 0.02 260);
-
-  --accent:          oklch(0.90 0.05 285);
-  --accent-foreground: oklch(0.20 0.08 285);
-
-  --destructive: oklch(0.577 0.245 27.325);
-
-  --border: oklch(0 0 0 / 10%);
-  --input:  oklch(0 0 0 / 12%);
-  --ring:   oklch(0.46 0.22 268 / 60%);
-
-  --sidebar:                    oklch(0.96 0.01 260);
-  --sidebar-foreground:         oklch(0.10 0.01 260);
-  --sidebar-primary:            oklch(0.46 0.22 268);
-  --sidebar-primary-foreground: oklch(0.98 0 0);
-  --sidebar-accent:             oklch(0.92 0.02 260);
-  --sidebar-accent-foreground:  oklch(0.20 0.04 260);
-  --sidebar-border:             oklch(0 0 0 / 10%);
-  --sidebar-ring:               oklch(0.46 0.22 268 / 60%);
+  --sidebar:                    oklch(0.97 0 0);
+  --sidebar-foreground:         oklch(0.08 0 0);
+  --sidebar-primary:            oklch(0.08 0 0);
+  --sidebar-primary-foreground: oklch(1 0 0);
+  --sidebar-accent:             oklch(0.94 0 0);
+  --sidebar-accent-foreground:  oklch(0.08 0 0);
+  --sidebar-border:             oklch(0 0 0 / 11%);
+  --sidebar-ring:               oklch(0.08 0 0 / 30%);
 }
 
 /* ─── Base layer ─────────────────────────────────────────────────────────── */
@@ -176,8 +127,7 @@
 
   html {
     @apply font-sans;
-    color-scheme: dark;
-    /* scroll-behavior: smooth is intentionally omitted — Lenis handles all easing */
+    color-scheme: light;
   }
 
   body {
@@ -188,52 +138,46 @@
     -moz-osx-font-smoothing: grayscale;
   }
 
-  /* Premium selection style */
   ::selection {
-    background-color: oklch(0.52 0.22 268 / 35%);
-    color: oklch(0.98 0 0);
+    background-color: oklch(0.63 0.22 38 / 22%);
+    color: oklch(0.08 0 0);
   }
 
-  /* Scrollbar — subtle dark style */
   ::-webkit-scrollbar        { width: 6px; height: 6px; }
   ::-webkit-scrollbar-track  { background: transparent; }
   ::-webkit-scrollbar-thumb  {
-    background: oklch(1 0 0 / 15%);
+    background: oklch(0 0 0 / 16%);
     border-radius: 9999px;
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: oklch(0.52 0.22 268 / 60%);
+    background: oklch(0.63 0.22 38 / 60%);
   }
 }
 
 /* ─── Utility layer ──────────────────────────────────────────────────────── */
 @layer utilities {
-  /* Brand glow shadow */
   .glow-brand {
-    box-shadow: 0 0 24px var(--brand-glow), 0 0 8px var(--brand-glow);
+    box-shadow: 0 0 20px var(--brand-glow), 0 0 6px var(--brand-glow);
   }
 
-  /* Glassmorphism surface */
   .glass {
-    background: oklch(1 0 0 / 4%);
+    background: oklch(1 0 0 / 80%);
     backdrop-filter: blur(16px) saturate(180%);
-    border: 1px solid oklch(1 0 0 / 8%);
+    border: 1px solid oklch(0 0 0 / 8%);
   }
 
-  /* Gradient text */
   .text-gradient {
-    background: linear-gradient(135deg, var(--brand) 0%, var(--purple) 100%);
+    background: linear-gradient(135deg, var(--brand) 0%, var(--gold) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
 
-  /* Subtle inner-glow card border */
   .card-premium {
     background: var(--card);
-    border: 1px solid oklch(1 0 0 / 8%);
+    border: 1px solid oklch(0 0 0 / 8%);
     box-shadow:
-      0 1px 0 0 oklch(1 0 0 / 6%) inset,
-      0 0 0 1px oklch(0 0 0 / 40%);
+      0 1px 3px oklch(0 0 0 / 7%),
+      0 1px 2px oklch(0 0 0 / 5%);
   }
 }
