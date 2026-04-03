@@ -92,14 +92,21 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
   const email      = session.customer_details?.email ?? null
   const amountTotal = session.amount_total ?? 0
 
-  const shippingAddress = session.shipping_details?.address
+  // shipping_details moved to collected_information in newer Stripe API versions;
+  // cast to any to stay compatible across SDK releases.
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const shipping = (session as any).collected_information?.shipping_details
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    ?? (session as any).shipping_details
+
+  const shippingAddress = shipping?.address
     ? {
-        line1:      session.shipping_details.address.line1   ?? '',
-        line2:      session.shipping_details.address.line2   ?? null,
-        city:       session.shipping_details.address.city    ?? '',
-        state:      session.shipping_details.address.state   ?? null,
-        postalCode: session.shipping_details.address.postal_code ?? '',
-        country:    session.shipping_details.address.country ?? '',
+        line1:      shipping.address.line1        ?? '',
+        line2:      shipping.address.line2        ?? null,
+        city:       shipping.address.city         ?? '',
+        state:      shipping.address.state        ?? null,
+        postalCode: shipping.address.postal_code  ?? '',
+        country:    shipping.address.country      ?? '',
       }
     : null
 
@@ -134,7 +141,7 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
   //       amountTotal,           // stored in cents
   //       currency:              session.currency ?? 'usd',
   //       status:                'PAID',
-  //       shippingName:          session.shipping_details?.name ?? null,
+  //       shippingName:          shipping?.name ?? null,
   //       shippingAddressJson:   shippingAddress
   //         ? JSON.stringify(shippingAddress)
   //         : null,
