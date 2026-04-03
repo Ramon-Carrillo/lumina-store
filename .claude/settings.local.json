@@ -3,7 +3,18 @@
     "allow": [
       "Bash(python -c \"import json,sys; d=json.load\\(sys.stdin\\); [print\\(k,v\\) for k,v in {**d.get\\('dependencies',{}\\),**d.get\\('devDependencies',{}\\)}.items\\(\\)]\")",
       "Bash(node:*)",
-      "Bash(npx tsc:*)"
+      "Bash(npx tsc:*)",
+      "Bash(winget install:*)",
+      "Bash(stripe login:*)",
+      "WebSearch",
+      "WebFetch(domain:unsplash.com)",
+      "WebFetch(domain:noembed.com)",
+      "WebFetch(domain:images.unsplash.com)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "WebFetch(domain:webcache.googleusercontent.com)",
+      "WebFetch(domain:source.unsplash.com)",
+      "Bash(npm run:*)"
     ]
   }
 }

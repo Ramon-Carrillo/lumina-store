@@ -5,6 +5,7 @@ import { ThemeProvider } from '@/components/providers/theme-provider'
 import { LenisProvider } from '@/components/providers/lenis-provider'
 import { CartProvider } from '@/components/providers/cart-provider'
 import { Navbar } from '@/components/layout/navbar'
+import { Footer } from '@/components/layout/footer'
 import { ScrollProgress } from '@/components/shop/scroll-progress'
 import './globals.css'
 
@@ -75,7 +76,7 @@ export default function RootLayout({
      */
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} min-h-full antialiased`}
       suppressHydrationWarning
     >
       <body className="flex min-h-full flex-col bg-background text-foreground">
@@ -92,6 +93,7 @@ export default function RootLayout({
                 starts below it instead of being hidden behind it.
               */}
               <main className="flex-1 pt-16">{children}</main>
+              <Footer />
 
               <Toaster
                 richColors

@@ -21,7 +21,13 @@ export function LenisProvider({ children }: { children: React.ReactNode }) {
 
   // Initialise once on mount
   useEffect(() => {
-    const instance = new Lenis({ autoRaf: true })
+    const instance = new Lenis({
+      autoRaf: true,
+      lerp: 0.08,          // smoothing (lower = snappier, 0.1 is default)
+      wheelMultiplier: 1.2, // extra distance per wheel tick — fixes under-scroll on mice
+      touchMultiplier: 2,   // snappier on trackpad / touch
+      infinite: false,
+    })
     setLenis(instance)
     return () => instance.destroy()
   }, [])

@@ -10,9 +10,12 @@
  * Re-running is safe — deletes all existing data first.
  */
 
-import { PrismaClient } from '../lib/generated/prisma'
+import { PrismaClient } from '../lib/generated/prisma/client'
+import { PrismaPg } from '@prisma/adapter-pg'
 
-const prisma = new PrismaClient()
+const prisma = new PrismaClient({
+  adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL! }),
+})
 
 // ─── Image helpers ────────────────────────────────────────────────────────────
 
@@ -45,7 +48,10 @@ async function main() {
   console.log('  ✓  Cleared existing data')
 
   // ── 2. Categories ──────────────────────────────────────────────────────────
-  const [catTWS, catHeadphones, catSport, catSpeakers, catAccessories] = await Promise.all([
+  const [
+    catTWS, catHeadphones, catSport, catSpeakers,
+    catGaming, catEarphones, catSoundbars, catDACs, catAccessories,
+  ] = await Promise.all([
     prisma.category.create({
       data: {
         name:        'True Wireless',
@@ -76,6 +82,34 @@ async function main() {
     }),
     prisma.category.create({
       data: {
+        name:        'Gaming',
+        slug:        'gaming',
+        description: 'High-fidelity gaming headsets built for competition and immersion.',
+      },
+    }),
+    prisma.category.create({
+      data: {
+        name:        'Earphones',
+        slug:        'earphones',
+        description: 'Wired in-ear monitors for the purist audiophile.',
+      },
+    }),
+    prisma.category.create({
+      data: {
+        name:        'Soundbars',
+        slug:        'soundbars',
+        description: 'Cinematic sound systems designed for your living space.',
+      },
+    }),
+    prisma.category.create({
+      data: {
+        name:        'DACs & Amps',
+        slug:        'dacs-amps',
+        description: 'Desktop DACs and amplifiers to unlock your headphones\' full potential.',
+      },
+    }),
+    prisma.category.create({
+      data: {
         name:        'Accessories',
         slug:        'accessories',
         description: 'Cables, cases, ear tips, and everything in between.',
@@ -83,7 +117,7 @@ async function main() {
     }),
   ])
 
-  console.log('  ✓  Categories created (5)')
+  console.log('  ✓  Categories created (9)')
 
   // ── 3. Products ────────────────────────────────────────────────────────────
   // ════════════════════════════════════════════════════════════════════════════
@@ -639,7 +673,8 @@ async function main() {
   })
   await prisma.productImage.createMany({
     data: [
-      { productId: magCase.id, position: 0, ...img('photo-1606220588913-b3aacb4d2f37', 'Lumina MagCase Pro wireless charging case') },
+      { productId: magCase.id, position: 0, ...img('photo-1574920162043-b872873f19c8', 'Lumina MagCase Pro wireless charging case on clean surface') },
+      { productId: magCase.id, position: 1, ...img('photo-1525825691042-e14d9042fc70', 'Lumina MagCase Pro charging case detail view') },
     ],
   })
   await prisma.productVariant.createMany({
@@ -649,7 +684,209 @@ async function main() {
     ],
   })
 
-  console.log('  ✓  Products created (14 total)')
+  // ════════════════════════════════════════════════════════════════════════════
+  //  GAMING
+  // ════════════════════════════════════════════════════════════════════════════
+
+  // ── Lumina Apex — Gaming headset ──────────────────────────────────────────
+  const apex = await prisma.product.create({
+    data: {
+      name:              'Lumina Apex',
+      slug:              'lumina-apex',
+      description:       'Engineered for the competitive edge. The Apex delivers 7.1 virtual surround sound through 50 mm neodymium drivers, so you hear footsteps before your opponents do. The detachable cardioid boom mic filters keyboard clatter and background noise for crystal-clear comms. USB-C for PC and 3.5 mm for console — one headset, every platform.',
+      price:             179.99,
+      compareAt:         219.99,
+      stock:             44,
+      featured:          true,
+      noiseCancellation: false,
+      transparencyMode:  false,
+      batteryLife:       null,
+      driverSize:        50,
+      frequencyResponse: '20 Hz – 20 kHz',
+      impedance:         32,
+      sensitivity:       98,
+      weight:            298,
+      connectivity:      ['USB-C', '3.5 mm Jack'],
+      colors:            ['Midnight Black', 'Arctic White'],
+      inBox:             ['Headset', 'Detachable Boom Mic', 'USB-C Cable', '3.5 mm Cable', 'USB-C to USB-A Adapter'],
+      warranty:          12,
+      metaTitle:         'Lumina Apex Gaming Headset — 7.1 Surround, 50 mm Drivers',
+      metaDescription:   '7.1 virtual surround, 50 mm drivers, detachable mic. USB-C & 3.5 mm. The Lumina Apex is built to win.',
+      categoryId:        catGaming.id,
+    },
+  })
+  await prisma.productImage.createMany({
+    data: [
+      { productId: apex.id, position: 0, ...img('photo-1612198188060-c7c2a3b66eae', 'Lumina Apex gaming headset on desk') },
+      { productId: apex.id, position: 1, ...img('photo-1599669454699-248893623440', 'Lumina Apex gaming headset side view') },
+    ],
+  })
+  await prisma.productVariant.createMany({
+    data: [
+      { productId: apex.id, name: 'Midnight Black', stock: 28 },
+      { productId: apex.id, name: 'Arctic White',   stock: 16 },
+    ],
+  })
+
+  // ─ Lumina Apex Lite — Entry gaming headset ────────────────────────────────
+  const apexLite = await prisma.product.create({
+    data: {
+      name:              'Lumina Apex Lite',
+      slug:              'lumina-apex-lite',
+      description:       'All the essentials, none of the excess. The Apex Lite packs 40 mm drivers and a flexible unidirectional mic into a lightweight on-ear design. Plug-and-play 3.5 mm means it works instantly on any platform — PC, console, or mobile.',
+      price:             79.99,
+      stock:             88,
+      featured:          false,
+      noiseCancellation: false,
+      transparencyMode:  false,
+      driverSize:        40,
+      frequencyResponse: '20 Hz – 20 kHz',
+      impedance:         32,
+      sensitivity:       95,
+      weight:            198,
+      connectivity:      ['3.5 mm Jack'],
+      colors:            ['Midnight Black', 'Carbon Red'],
+      inBox:             ['Headset', 'Detachable Mic', '1.5 m Braided Cable'],
+      warranty:          12,
+      metaTitle:         'Lumina Apex Lite Gaming Headset — Plug-and-Play',
+      metaDescription:   'Lightweight gaming headset with 40 mm drivers and detachable mic. Plug-and-play 3.5 mm. Works on every platform.',
+      categoryId:        catGaming.id,
+    },
+  })
+  await prisma.productImage.createMany({
+    data: [
+      { productId: apexLite.id, position: 0, ...img('photo-1603481588273-2f908a9a7a1b', 'Lumina Apex Lite gaming headset') },
+    ],
+  })
+  await prisma.productVariant.createMany({
+    data: [
+      { productId: apexLite.id, name: 'Midnight Black', stock: 55 },
+      { productId: apexLite.id, name: 'Carbon Red',     stock: 33 },
+    ],
+  })
+
+  // ════════════════════════════════════════════════════════════════════════════
+  //  EARPHONES (wired IEMs)
+  // ════════════════════════════════════════════════════════════════════════════
+
+  // ── Lumina Thread — Wired IEMs ────────────────────────────────────────────
+  const thread = await prisma.product.create({
+    data: {
+      name:              'Lumina Thread',
+      slug:              'lumina-thread',
+      description:       'For listeners who believe wires are a feature, not a flaw. The Thread uses a 10 mm liquid-crystal polymer driver to deliver ruler-flat frequency response and sub-bass extension that wireless codecs can\'t touch. The detachable MMCX cable swaps between balanced 4.4 mm and single-ended 3.5 mm terminations — pair it with any source.',
+      price:             149.99,
+      compareAt:         179.99,
+      stock:             62,
+      featured:          false,
+      noiseCancellation: false,
+      transparencyMode:  false,
+      driverSize:        10,
+      frequencyResponse: '10 Hz – 25 kHz',
+      impedance:         18,
+      sensitivity:       108,
+      connectivity:      ['3.5 mm Jack', '4.4 mm Balanced (cable sold separately)'],
+      colors:            ['Graphite', 'Champagne'],
+      inBox:             ['Earphones (×2)', 'MMCX Cable (3.5 mm)', 'Ear Tips S/M/L (silicone)', 'Ear Tips S/M/L (foam)', 'Hard Carry Case'],
+      warranty:          12,
+      metaTitle:         'Lumina Thread Wired Earphones — MMCX IEM, LCP Driver',
+      metaDescription:   'Liquid-crystal polymer driver, detachable MMCX cable, 4.4 mm balanced ready. The Lumina Thread is hi-fi at your fingertips.',
+      categoryId:        catEarphones.id,
+    },
+  })
+  await prisma.productImage.createMany({
+    data: [
+      { productId: thread.id, position: 0, ...img('photo-1484704849700-f032a568e944', 'Lumina Thread wired earphones') },
+      { productId: thread.id, position: 1, ...img('photo-1572536147248-ac59a8abfa4b', 'Lumina Thread MMCX cable detail') },
+    ],
+  })
+  await prisma.productVariant.createMany({
+    data: [
+      { productId: thread.id, name: 'Graphite',   stock: 35 },
+      { productId: thread.id, name: 'Champagne',  stock: 27 },
+    ],
+  })
+
+  // ════════════════════════════════════════════════════════════════════════════
+  //  SOUNDBARS
+  // ════════════════════════════════════════════════════════════════════════════
+
+  // ── Lumina Arc — 2.1 Soundbar ─────────────────────────────────────────────
+  const arc = await prisma.product.create({
+    data: {
+      name:              'Lumina Arc',
+      slug:              'lumina-arc',
+      description:       'Transform your living room without the clutter. The Arc\'s 90 W 2.1 system — seven drivers plus a wireless subwoofer — decodes Dolby Atmos and DTS:X for height-channel audio from a single 900 mm bar. HDMI eARC keeps your remote setup simple; Bluetooth 5.3 streams music when the TV\'s off.',
+      price:             449.99,
+      compareAt:         549.99,
+      stock:             17,
+      featured:          true,
+      noiseCancellation: false,
+      transparencyMode:  false,
+      weight:            3200,
+      connectivity:      ['HDMI eARC', 'Optical', 'Bluetooth 5.3', 'USB-A (media)'],
+      colors:            ['Matte Black', 'Light Grey'],
+      inBox:             ['Soundbar', 'Wireless Subwoofer', 'HDMI Cable', 'Optical Cable', 'Wall-mount Kit', 'Remote Control'],
+      warranty:          24,
+      metaTitle:         'Lumina Arc 2.1 Soundbar — Dolby Atmos, HDMI eARC',
+      metaDescription:   '90 W, 7 drivers, wireless sub, Dolby Atmos & DTS:X. The Lumina Arc brings the cinema home.',
+      categoryId:        catSoundbars.id,
+    },
+  })
+  await prisma.productImage.createMany({
+    data: [
+      { productId: arc.id, position: 0, ...img('photo-1545454675-3531b543be5d', 'Lumina Arc soundbar below TV') },
+      { productId: arc.id, position: 1, ...img('photo-1563330232-57114bb0823c', 'Lumina Arc soundbar closeup grille') },
+    ],
+  })
+  await prisma.productVariant.createMany({
+    data: [
+      { productId: arc.id, name: 'Matte Black', stock: 11 },
+      { productId: arc.id, name: 'Light Grey',  stock: 6  },
+    ],
+  })
+
+  // ════════════════════════════════════════════════════════════════════════════
+  //  DACs & AMPS
+  // ════════════════════════════════════════════════════════════════════════════
+
+  // ── Lumina Stack — Desktop DAC/Amp ────────────────────────────────────────
+  const stack = await prisma.product.create({
+    data: {
+      name:              'Lumina Stack',
+      slug:              'lumina-stack',
+      description:       'Your headphones are only as good as what drives them. The Stack pairs a 32-bit/384 kHz ES9038 DAC with a discrete Class-A amplifier stage capable of delivering 1 W into 32 Ω. Single-ended 3.5 mm and balanced 4.4 mm outputs cover every headphone on the market. Feed it from USB-C or optical and hear the difference immediately.',
+      price:             299.99,
+      stock:             26,
+      featured:          false,
+      noiseCancellation: false,
+      transparencyMode:  false,
+      frequencyResponse: '20 Hz – 20 kHz (±0.1 dB)',
+      impedance:         1,
+      weight:            680,
+      connectivity:      ['USB-C', 'Optical (TosLink)', '3.5 mm Output', '4.4 mm Balanced Output', 'RCA Line Out'],
+      colors:            ['Brushed Aluminium', 'Matte Black'],
+      inBox:             ['DAC/Amp Unit', 'USB-C Cable', 'Power Adapter', 'Quick Start Guide'],
+      warranty:          24,
+      metaTitle:         'Lumina Stack Desktop DAC/Amp — ES9038, 4.4 mm Balanced',
+      metaDescription:   'ES9038 DAC, Class-A amp, 4.4 mm balanced + 3.5 mm outputs. 32-bit/384 kHz. The Lumina Stack unlocks your headphones.',
+      categoryId:        catDACs.id,
+    },
+  })
+  await prisma.productImage.createMany({
+    data: [
+      { productId: stack.id, position: 0, ...img('photo-1558618047-3c8c76ca7d13', 'Lumina Stack DAC amp on desk') },
+      { productId: stack.id, position: 1, ...img('photo-1519817650390-64a93db51149', 'Lumina Stack rear connections') },
+    ],
+  })
+  await prisma.productVariant.createMany({
+    data: [
+      { productId: stack.id, name: 'Brushed Aluminium', stock: 16 },
+      { productId: stack.id, name: 'Matte Black',        stock: 10 },
+    ],
+  })
+
+  console.log('  ✓  Products created (20 total)')
 
   // ── 4. Demo users + reviews ────────────────────────────────────────────────
   const [alexReyes, jordanKim, samPatel] = await Promise.all([

@@ -177,7 +177,7 @@
   html {
     @apply font-sans;
     color-scheme: dark;
-    scroll-behavior: smooth;
+    /* scroll-behavior: smooth is intentionally omitted — Lenis handles all easing */
   }
 
   body {

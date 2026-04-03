@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { useTheme } from "next-themes"
@@ -13,6 +13,16 @@ import {
   X,
   Headphones,
   ChevronRight,
+  ChevronDown,
+  Music,
+  Zap,
+  Volume2,
+  Package,
+  ArrowRight,
+  Gamepad2,
+  AudioLines,
+  MonitorSpeaker,
+  Sliders,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
@@ -26,14 +36,214 @@ import { useCart } from "@/components/providers/cart-provider"
 import { CartDrawer } from "@/components/shop/cart-drawer"
 import { cn } from "@/lib/utils"
 
-// ─── Nav links ────────────────────────────────────────────────────────────────
+// ─── Category config ──────────────────────────────────────────────────────────
+
+const CATEGORIES = [
+  {
+    slug:        "true-wireless",
+    name:        "True Wireless",
+    description: "ANC earbuds for every moment",
+    icon:        Music,
+  },
+  {
+    slug:        "headphones",
+    name:        "Headphones",
+    description: "Over-ear & on-ear immersion",
+    icon:        Headphones,
+  },
+  {
+    slug:        "sport",
+    name:        "Sport",
+    description: "Sweat-proof, built to move",
+    icon:        Zap,
+  },
+  {
+    slug:        "speakers",
+    name:        "Speakers",
+    description: "Portable & home audio",
+    icon:        Volume2,
+  },
+  {
+    slug:        "gaming",
+    name:        "Gaming",
+    description: "Win without distraction",
+    icon:        Gamepad2,
+  },
+  {
+    slug:        "earphones",
+    name:        "Earphones",
+    description: "Wired precision for audiophiles",
+    icon:        AudioLines,
+  },
+  {
+    slug:        "soundbars",
+    name:        "Soundbars",
+    description: "Cinematic sound for your space",
+    icon:        MonitorSpeaker,
+  },
+  {
+    slug:        "dacs-amps",
+    name:        "DACs & Amps",
+    description: "Power your listening setup",
+    icon:        Sliders,
+  },
+  {
+    slug:        "accessories",
+    name:        "Accessories",
+    description: "Cables, cases & ear tips",
+    icon:        Package,
+  },
+] as const
+
+// ─── Other nav links ──────────────────────────────────────────────────────────
 
 const NAV_LINKS = [
-  { href: "/products", label: "Shop" },
-  { href: "/categories", label: "Categories" },
-  { href: "/about", label: "About" },
+  { href: "/about",   label: "About"   },
   { href: "/contact", label: "Contact" },
 ] as const
+
+// ─── Dropdown variants ────────────────────────────────────────────────────────
+
+const dropdownVariants = {
+  hidden:  { opacity: 0, y: -8, scale: 0.97 },
+  visible: {
+    opacity:    1,
+    y:          0,
+    scale:      1,
+    transition: { duration: 0.18, ease: "easeOut" },
+  },
+  exit: {
+    opacity:    0,
+    y:          -6,
+    scale:      0.97,
+    transition: { duration: 0.13, ease: "easeIn" },
+  },
+}
+
+// ─── Shop dropdown ────────────────────────────────────────────────────────────
+
+function ShopDropdown({ pathname }: { pathname: string }) {
+  const [open, setOpen] = useState(false)
+  const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  const isShopActive =
+    pathname.startsWith("/products") || pathname.startsWith("/categories")
+
+  function handleMouseEnter() {
+    if (closeTimer.current) clearTimeout(closeTimer.current)
+    setOpen(true)
+  }
+
+  function handleMouseLeave() {
+    closeTimer.current = setTimeout(() => setOpen(false), 120)
+  }
+
+  return (
+    <div
+      className="relative"
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
+      {/* Trigger */}
+      <button
+        className={cn(
+          "flex items-center gap-1 text-sm font-medium transition-colors",
+          "relative after:absolute after:-bottom-0.5 after:left-0 after:h-px after:w-full",
+          "after:origin-left after:bg-primary after:transition-transform after:duration-200",
+          open || isShopActive
+            ? "text-foreground after:scale-x-100"
+            : "text-muted-foreground after:scale-x-0 hover:text-foreground hover:after:scale-x-100"
+        )}
+        aria-expanded={open}
+        aria-haspopup="true"
+      >
+        Shop
+        <motion.span
+          animate={{ rotate: open ? 180 : 0 }}
+          transition={{ duration: 0.2 }}
+        >
+          <ChevronDown className="size-3.5" />
+        </motion.span>
+      </button>
+
+      {/* Dropdown panel */}
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            variants={dropdownVariants}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+            className={cn(
+              "absolute left-1/2 top-full mt-3 w-[560px] -translate-x-1/2",
+              "rounded-2xl border border-border bg-card shadow-2xl",
+              "overflow-hidden"
+            )}
+          >
+            {/* Header */}
+            <div className="border-b border-border px-5 py-3.5">
+              <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+                Browse by category
+              </p>
+            </div>
+
+            {/* Category grid */}
+            <div className="grid grid-cols-3 gap-px bg-border p-px">
+              {CATEGORIES.map(({ slug, name, description, icon: Icon }) => {
+                const active = pathname.includes(`category=${slug}`)
+                return (
+                  <Link
+                    key={slug}
+                    href={`/products?category=${slug}`}
+                    onClick={() => setOpen(false)}
+                    className={cn(
+                      "group flex items-start gap-3 bg-card px-4 py-3.5 transition-colors",
+                      "hover:bg-primary/5",
+                      active && "bg-primary/8"
+                    )}
+                  >
+                    <span
+                      className={cn(
+                        "mt-0.5 flex size-8 shrink-0 items-center justify-center rounded-lg",
+                        "bg-primary/10 transition-colors group-hover:bg-primary/20",
+                        active && "bg-primary/20"
+                      )}
+                    >
+                      <Icon className="size-4 text-primary" />
+                    </span>
+                    <span>
+                      <span className="block text-sm font-medium text-foreground">
+                        {name}
+                      </span>
+                      <span className="block text-xs text-muted-foreground">
+                        {description}
+                      </span>
+                    </span>
+                  </Link>
+                )
+              })}
+            </div>
+
+            {/* Footer — view all */}
+            <Link
+              href="/products"
+              onClick={() => setOpen(false)}
+              className={cn(
+                "flex items-center justify-between px-5 py-3.5",
+                "border-t border-border text-sm font-medium",
+                "text-muted-foreground transition-colors hover:text-foreground",
+                "group"
+              )}
+            >
+              View all products
+              <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
+            </Link>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  )
+}
 
 // ─── Theme toggle ─────────────────────────────────────────────────────────────
 
@@ -77,8 +287,6 @@ function ThemeToggle() {
   )
 }
 
-// CartButton is replaced by CartDrawer (self-contained trigger + sheet).
-
 // ─── Desktop nav link ─────────────────────────────────────────────────────────
 
 function NavLink({
@@ -86,8 +294,8 @@ function NavLink({
   label,
   pathname,
 }: {
-  href: string
-  label: string
+  href:     string
+  label:    string
   pathname: string
 }) {
   const active = pathname === href || pathname.startsWith(href + "/")
@@ -110,21 +318,95 @@ function NavLink({
   )
 }
 
+// ─── Mobile categories accordion ─────────────────────────────────────────────
+
+function MobileCategoryList({ pathname }: { pathname: string }) {
+  const [open, setOpen] = useState(false)
+
+  return (
+    <li>
+      <button
+        onClick={() => setOpen((o) => !o)}
+        className={cn(
+          "flex w-full items-center justify-between px-6 py-3.5 text-sm font-medium",
+          "border-b border-border/50 transition-colors hover:bg-muted hover:text-foreground",
+          pathname.startsWith("/products")
+            ? "text-primary bg-primary/8"
+            : "text-muted-foreground"
+        )}
+      >
+        Shop
+        <motion.span
+          animate={{ rotate: open ? 180 : 0 }}
+          transition={{ duration: 0.2 }}
+        >
+          <ChevronDown className="size-4 opacity-60" />
+        </motion.span>
+      </button>
+
+      <AnimatePresence initial={false}>
+        {open && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.22, ease: "easeInOut" }}
+            className="overflow-hidden bg-muted/30"
+          >
+            {/* All products */}
+            <Link
+              href="/products"
+              className={cn(
+                "flex items-center gap-3 px-6 py-2.5 text-sm transition-colors",
+                "border-b border-border/30 hover:text-foreground",
+                pathname === "/products"
+                  ? "font-semibold text-primary"
+                  : "text-muted-foreground"
+              )}
+            >
+              <ArrowRight className="size-3.5 shrink-0" />
+              All Products
+            </Link>
+
+            {CATEGORIES.map(({ slug, name, icon: Icon }) => {
+              const active = pathname.includes(`category=${slug}`)
+              return (
+                <Link
+                  key={slug}
+                  href={`/products?category=${slug}`}
+                  className={cn(
+                    "flex items-center gap-3 px-6 py-2.5 text-sm transition-colors",
+                    "border-b border-border/30 last:border-b-0 hover:text-foreground",
+                    active
+                      ? "font-semibold text-primary"
+                      : "text-muted-foreground"
+                  )}
+                >
+                  <Icon className="size-3.5 shrink-0 text-primary/70" />
+                  {name}
+                </Link>
+              )
+            })}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </li>
+  )
+}
+
 // ─── Navbar ───────────────────────────────────────────────────────────────────
 
 export function Navbar() {
-  const pathname = usePathname()
+  const pathname    = usePathname()
   const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
 
-  // Detect scroll to apply border + shadow
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 12)
     window.addEventListener("scroll", onScroll, { passive: true })
     return () => window.removeEventListener("scroll", onScroll)
   }, [])
 
-  // Close mobile menu on route change
   useEffect(() => setMobileOpen(false), [pathname])
 
   return (
@@ -152,6 +434,9 @@ export function Navbar() {
 
         {/* ── Desktop links ── */}
         <ul className="hidden items-center gap-8 md:flex">
+          <li>
+            <ShopDropdown pathname={pathname} />
+          </li>
           {NAV_LINKS.map(({ href, label }) => (
             <li key={href}>
               <NavLink href={href} label={label} pathname={pathname} />
@@ -208,6 +493,10 @@ export function Navbar() {
               </SheetHeader>
 
               <ul className="mt-2 flex flex-col">
+                {/* Shop with expandable categories */}
+                <MobileCategoryList pathname={pathname} />
+
+                {/* Other links */}
                 {NAV_LINKS.map(({ href, label }, i) => {
                   const active =
                     pathname === href || pathname.startsWith(href + "/")
@@ -216,7 +505,7 @@ export function Navbar() {
                       key={href}
                       initial={{ opacity: 0, x: 16 }}
                       animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: i * 0.05 + 0.05 }}
+                      transition={{ delay: i * 0.05 + 0.1 }}
                     >
                       <Link
                         href={href}
@@ -256,7 +545,8 @@ export function Navbar() {
   )
 }
 
-// Small inline badge for the mobile drawer cart link
+// ─── Cart badge (mobile drawer) ───────────────────────────────────────────────
+
 function CartBadge() {
   const { itemCount } = useCart()
   if (itemCount === 0) return null
