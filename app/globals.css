@@ -91,7 +91,7 @@
 
   /* ── Muted ── */
   --muted:          oklch(0.96 0 0);       /* #F5F5F5 */
-  --muted-foreground: oklch(0.46 0 0);     /* #767676 */
+  --muted-foreground: oklch(0.43 0 0);     /* #6B6B6B — 5:1 contrast on white */
 
   /* ── Accent ── */
   --accent:          oklch(0.95 0 0);

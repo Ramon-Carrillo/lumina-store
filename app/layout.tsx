@@ -23,6 +23,10 @@ const geistMono = Geist_Mono({
 // ─── Metadata ─────────────────────────────────────────────────────────────────
 
 export const metadata: Metadata = {
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_SITE_URL ??
+    (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000'),
+  ),
   title: {
     default: 'Lumina Store',
     template: '%s | Lumina Store',
@@ -34,13 +38,11 @@ export const metadata: Metadata = {
     siteName: 'Lumina Store',
     title: 'Lumina Store — Premium Sound, Elevated',
     description: 'Premium wireless earbuds and audio accessories — crafted for audiophiles.',
-    images: [{ url: '/og-image.png', width: 1200, height: 630, alt: 'Lumina Store — Premium Sound, Elevated' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Lumina Store — Premium Sound, Elevated',
     description: 'Premium wireless earbuds and audio accessories — crafted for audiophiles.',
-    images: ['/og-image.png'],
   },
   robots: {
     index: true,
