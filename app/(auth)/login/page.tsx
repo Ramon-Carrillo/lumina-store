@@ -104,8 +104,8 @@ export default function LoginPage() {
               className={cn(
                 'flex w-full items-center justify-center gap-2 rounded-full py-3',
                 'bg-primary text-sm font-semibold text-primary-foreground',
-                'transition-all hover:bg-primary/90 hover:scale-[1.02]',
-                'disabled:cursor-not-allowed disabled:opacity-60 disabled:scale-100',
+                'transition-all hover:bg-primary/90 hover:shadow-lg',
+                'disabled:cursor-not-allowed disabled:opacity-60',
                 'glow-brand'
               )}
             >

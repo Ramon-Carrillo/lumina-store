@@ -157,7 +157,7 @@ export default async function SuccessPage({
           <div className="mt-8 flex flex-col items-center gap-3">
             <Link
               href="/products"
-              className="flex items-center gap-2 rounded-full bg-brand px-6 py-3 text-sm font-semibold text-primary-foreground transition-all hover:bg-brand/90 hover:scale-[1.02] glow-brand"
+              className="flex items-center gap-2 rounded-full bg-brand px-6 py-3 text-sm font-semibold text-primary-foreground transition-all hover:bg-brand/90 hover:shadow-lg glow-brand"
             >
               Continue shopping
               <ArrowRight className="size-4" />

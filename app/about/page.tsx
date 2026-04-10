@@ -89,7 +89,7 @@ export default function AboutPage() {
               </p>
               <Link
                 href="/products"
-                className="mt-8 inline-flex items-center gap-2 rounded-full bg-primary px-7 py-3 text-sm font-semibold text-primary-foreground transition-all hover:bg-primary/90 hover:scale-[1.02] glow-brand"
+                className="mt-8 inline-flex items-center gap-2 rounded-full bg-primary px-7 py-3 text-sm font-semibold text-primary-foreground transition-all hover:bg-primary/90 hover:shadow-lg glow-brand"
               >
                 Explore our products
                 <ArrowRight className="size-4" />
@@ -172,7 +172,7 @@ export default function AboutPage() {
           <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
             <Link
               href="/products"
-              className="inline-flex items-center gap-2 rounded-full bg-primary px-8 py-3 text-sm font-semibold text-primary-foreground glow-brand transition-all hover:bg-primary/90 hover:scale-[1.02]"
+              className="inline-flex items-center gap-2 rounded-full bg-primary px-8 py-3 text-sm font-semibold text-primary-foreground glow-brand transition-all hover:bg-primary/90 hover:shadow-lg"
             >
               Shop Now <ArrowRight className="size-4" />
             </Link>

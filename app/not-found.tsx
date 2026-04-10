@@ -91,7 +91,7 @@ export default function NotFound() {
         >
           <Link
             href="/products"
-            className="flex items-center gap-2 rounded-full bg-brand px-7 py-3.5 text-sm font-semibold text-primary-foreground transition-all hover:bg-brand/90 hover:scale-[1.02] glow-brand"
+            className="flex items-center gap-2 rounded-full bg-brand px-7 py-3.5 text-sm font-semibold text-primary-foreground transition-all hover:bg-brand/90 hover:shadow-lg glow-brand"
           >
             Browse products
             <ArrowRight className="size-4" />

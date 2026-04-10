@@ -113,7 +113,7 @@ export function Hero() {
         >
           <Link
             href="/products"
-            className="glow-brand inline-flex items-center justify-center rounded-full bg-brand px-9 py-4 text-base font-semibold text-primary-foreground transition-all duration-200 hover:scale-[1.04] hover:bg-brand/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+            className="glow-brand inline-flex items-center justify-center rounded-full bg-brand px-9 py-4 text-base font-semibold text-primary-foreground transition-all duration-200 hover:bg-brand/90 hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
           >
             Shop Now
           </Link>

@@ -194,7 +194,7 @@ export default function CartPage() {
                     'mt-5 flex w-full items-center justify-center gap-2',
                     'rounded-full py-3.5 text-base font-semibold',
                     'bg-brand text-primary-foreground glow-brand',
-                    'transition-all hover:scale-[1.02] hover:bg-brand/90'
+                    'transition-all hover:bg-brand/90 hover:shadow-lg'
                   )}
                 >
                   Proceed to Checkout
@@ -333,7 +333,7 @@ function EmptyCart() {
       </div>
       <Link
         href="/products"
-        className="inline-flex items-center gap-2 rounded-full bg-brand px-8 py-3 text-sm font-semibold text-primary-foreground transition-all hover:scale-[1.03] hover:bg-brand/90"
+        className="inline-flex items-center gap-2 rounded-full bg-brand px-8 py-3 text-sm font-semibold text-primary-foreground transition-all hover:bg-brand/90 hover:shadow-lg"
       >
         Shop Now
       </Link>
