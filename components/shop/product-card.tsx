@@ -1,7 +1,7 @@
 'use client'
 
 import { useOptimistic, useTransition } from 'react'
-import Image from 'next/image'
+import { ProductImage } from '@/components/ui/product-image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { motion, AnimatePresence, type Variants } from 'framer-motion'
@@ -137,7 +137,7 @@ export function ProductCard({ product }: { product: ProductCardData }) {
           {/* Image */}
           <motion.div className="h-full w-full" variants={image}>
             {thumb?.url ? (
-              <Image
+              <ProductImage
                 src={thumb.url}
                 alt={thumb.alt ?? product.name}
                 fill

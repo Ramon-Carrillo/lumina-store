@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useOptimistic, useTransition } from 'react'
-import Image from 'next/image'
+import { ProductImage } from '@/components/ui/product-image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { motion, AnimatePresence, type Variants } from 'framer-motion'
@@ -78,7 +78,7 @@ function ImageGallery({
             className="absolute inset-0"
           >
             {images[selected]?.url ? (
-              <Image
+              <ProductImage
                 src={images[selected].url}
                 alt={images[selected].alt ?? name}
                 fill
@@ -111,7 +111,7 @@ function ImageGallery({
               aria-label={`View image ${i + 1}`}
             >
               {img.url ? (
-                <Image
+                <ProductImage
                   src={img.url}
                   alt={img.alt ?? `${name} — view ${i + 1}`}
                   fill

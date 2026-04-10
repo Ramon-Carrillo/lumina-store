@@ -1,7 +1,7 @@
 'use client'
 
 import { useOptimistic, useTransition } from 'react'
-import Image from 'next/image'
+import { ProductImage } from '@/components/ui/product-image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -239,7 +239,7 @@ function CartRow({
       <Link href={`/products/${item.slug}`} className="shrink-0">
         <div className="relative size-20 overflow-hidden rounded-xl bg-surface sm:size-24">
           {item.image ? (
-            <Image
+            <ProductImage
               src={item.image}
               alt={item.name}
               fill

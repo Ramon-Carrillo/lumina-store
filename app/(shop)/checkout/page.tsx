@@ -1,7 +1,7 @@
 'use client'
 
 import { useTransition } from 'react'
-import Image from 'next/image'
+import { ProductImage } from '@/components/ui/product-image'
 import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
@@ -39,7 +39,7 @@ function OrderLine({
       {/* Thumbnail with quantity badge */}
       <div className="relative size-14 shrink-0 overflow-hidden rounded-lg bg-surface">
         {image ? (
-          <Image src={image} alt={name} fill sizes="56px" className="object-cover" />
+          <ProductImage src={image} alt={name} fill sizes="56px" className="object-cover" />
         ) : (
           <div className="flex h-full w-full items-center justify-center">
             <Headphones className="size-6 text-muted-foreground/25" />

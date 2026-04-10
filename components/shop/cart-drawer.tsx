@@ -1,7 +1,7 @@
 'use client'
 
 import { useOptimistic, useTransition } from 'react'
-import Image from 'next/image'
+import { ProductImage } from '@/components/ui/product-image'
 import Link from 'next/link'
 import { motion, AnimatePresence, type Variants } from 'framer-motion'
 import {
@@ -267,7 +267,7 @@ function CartItem({
       {/* Thumbnail */}
       <div className="relative size-[72px] shrink-0 overflow-hidden rounded-xl bg-surface">
         {item.image ? (
-          <Image
+          <ProductImage
             src={item.image}
             alt={item.name}
             fill
