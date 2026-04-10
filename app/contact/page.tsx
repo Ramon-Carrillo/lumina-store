@@ -88,7 +88,7 @@ export default function ContactPage() {
                 </div>
                 <button
                   onClick={() => setSubmitted(false)}
-                  className="text-sm text-brand transition-colors hover:text-brand/80"
+                  className="cursor-pointer text-sm text-brand transition-colors hover:text-brand/80"
                 >
                   Send another message
                 </button>

@@ -101,7 +101,7 @@ function ImageGallery({
               key={i}
               onClick={() => setSelected(i)}
               className={cn(
-                'relative size-16 shrink-0 overflow-hidden rounded-lg border-2 transition-colors duration-150',
+                'relative size-16 shrink-0 cursor-pointer overflow-hidden rounded-lg border-2 transition-colors duration-150',
                 i === selected
                   ? 'border-brand'
                   : 'border-border hover:border-muted-foreground'
@@ -153,7 +153,7 @@ function QuantitySelector({
       <button
         onClick={() => onChange(Math.max(1, value - 1))}
         disabled={value <= 1}
-        className="flex size-10 items-center justify-center text-muted-foreground transition-colors hover:text-foreground disabled:pointer-events-none disabled:opacity-30"
+        className="flex size-10 cursor-pointer items-center justify-center text-muted-foreground transition-colors hover:text-foreground disabled:pointer-events-none disabled:opacity-30"
         aria-label="Decrease quantity"
       >
         <Minus className="size-3.5" />
@@ -162,7 +162,7 @@ function QuantitySelector({
       <button
         onClick={() => onChange(Math.min(max, value + 1))}
         disabled={value >= max}
-        className="flex size-10 items-center justify-center text-muted-foreground transition-colors hover:text-foreground disabled:pointer-events-none disabled:opacity-30"
+        className="flex size-10 cursor-pointer items-center justify-center text-muted-foreground transition-colors hover:text-foreground disabled:pointer-events-none disabled:opacity-30"
         aria-label="Increase quantity"
       >
         <Plus className="size-3.5" />
@@ -432,7 +432,7 @@ export function ProductDetail({ product }: { product: SerializedProduct }) {
                       onClick={() => setSelectedVariantId(v.id)}
                       disabled={v.stock === 0}
                       className={cn(
-                        'rounded-lg border px-3 py-1.5 text-sm font-medium transition-all',
+                        'cursor-pointer rounded-lg border px-3 py-1.5 text-sm font-medium transition-all',
                         v.id === selectedVariantId
                           ? 'border-brand bg-brand/10 text-brand'
                           : 'border-border text-muted-foreground hover:border-foreground hover:text-foreground',

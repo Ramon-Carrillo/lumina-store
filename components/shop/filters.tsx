@@ -126,7 +126,7 @@ export function Filters({ categories, current }: Props) {
                 key={value}
                 onClick={() => navigate({ sort: value })}
                 className={cn(
-                  'w-full rounded-lg px-3 py-2 text-left text-sm font-medium transition-colors',
+                  'w-full cursor-pointer rounded-lg px-3 py-2 text-left text-sm font-medium transition-colors',
                   active
                     ? 'bg-brand/10 text-brand'
                     : 'text-muted-foreground hover:bg-surface hover:text-foreground'
@@ -149,7 +149,7 @@ export function Filters({ categories, current }: Props) {
             <button
               onClick={() => navigate({ category: undefined })}
               className={cn(
-                'w-full rounded-lg px-3 py-2 text-left text-sm font-medium transition-colors',
+                'w-full cursor-pointer rounded-lg px-3 py-2 text-left text-sm font-medium transition-colors',
                 !current.category
                   ? 'bg-brand/10 text-brand'
                   : 'text-muted-foreground hover:bg-surface hover:text-foreground'
@@ -164,7 +164,7 @@ export function Filters({ categories, current }: Props) {
                   key={cat.id}
                   onClick={() => navigate({ category: active ? undefined : cat.slug })}
                   className={cn(
-                    'w-full rounded-lg px-3 py-2 text-left text-sm font-medium transition-colors',
+                    'w-full cursor-pointer rounded-lg px-3 py-2 text-left text-sm font-medium transition-colors',
                     active
                       ? 'bg-brand/10 text-brand'
                       : 'text-muted-foreground hover:bg-surface hover:text-foreground'
@@ -193,7 +193,7 @@ export function Filters({ categories, current }: Props) {
                 key={label}
                 onClick={() => navigate({ minPrice: min, maxPrice: max })}
                 className={cn(
-                  'w-full rounded-lg px-3 py-2 text-left text-sm font-medium transition-colors',
+                  'w-full cursor-pointer rounded-lg px-3 py-2 text-left text-sm font-medium transition-colors',
                   active
                     ? 'bg-brand/10 text-brand'
                     : 'text-muted-foreground hover:bg-surface hover:text-foreground'
@@ -210,7 +210,7 @@ export function Filters({ categories, current }: Props) {
       {activeCount > 0 && (
         <button
           onClick={() => navigate({ q: undefined, category: undefined, sort: undefined, minPrice: undefined, maxPrice: undefined })}
-          className="flex w-full items-center justify-center gap-1.5 rounded-lg border border-border py-2 text-xs font-semibold text-muted-foreground transition-colors hover:border-destructive hover:text-destructive"
+          className="flex w-full cursor-pointer items-center justify-center gap-1.5 rounded-lg border border-border py-2 text-xs font-semibold text-muted-foreground transition-colors hover:border-destructive hover:text-destructive"
         >
           <X className="size-3" />
           Clear all filters
@@ -225,7 +225,7 @@ export function Filters({ categories, current }: Props) {
       <div className="mb-4 lg:hidden">
         <button
           onClick={() => setMobileOpen((o) => !o)}
-          className="glass flex w-full items-center justify-between rounded-xl px-4 py-3 text-sm font-medium text-foreground"
+          className="glass flex w-full cursor-pointer items-center justify-between rounded-xl px-4 py-3 text-sm font-medium text-foreground"
         >
           <span className="flex items-center gap-2">
             <SlidersHorizontal className="size-4" />

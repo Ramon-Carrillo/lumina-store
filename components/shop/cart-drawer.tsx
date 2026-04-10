@@ -160,7 +160,7 @@ export function CartDrawer({ triggerClassName }: { triggerClassName?: string }) 
             {optimisticItems.length > 0 && (
               <button
                 onClick={handleClear}
-                className="text-xs text-muted-foreground transition-colors hover:text-destructive"
+                className="cursor-pointer text-xs text-muted-foreground transition-colors hover:text-destructive"
               >
                 Clear all
               </button>
@@ -298,7 +298,7 @@ function CartItem({
 
           <button
             onClick={onRemove}
-            className="shrink-0 text-muted-foreground transition-colors hover:text-destructive"
+            className="shrink-0 cursor-pointer text-muted-foreground transition-colors hover:text-destructive"
             aria-label={`Remove ${item.name} from cart`}
           >
             <X className="size-4" />
@@ -310,7 +310,7 @@ function CartItem({
           <div className="flex items-center rounded-lg border border-border">
             <button
               onClick={() => onUpdateQty(item.quantity - 1)}
-              className="flex size-7 items-center justify-center text-muted-foreground transition-colors hover:text-foreground"
+              className="flex size-7 cursor-pointer items-center justify-center text-muted-foreground transition-colors hover:text-foreground"
               aria-label="Decrease quantity"
             >
               <Minus className="size-3" />
@@ -320,7 +320,7 @@ function CartItem({
             </span>
             <button
               onClick={() => onUpdateQty(item.quantity + 1)}
-              className="flex size-7 items-center justify-center text-muted-foreground transition-colors hover:text-foreground"
+              className="flex size-7 cursor-pointer items-center justify-center text-muted-foreground transition-colors hover:text-foreground"
               aria-label="Increase quantity"
             >
               <Plus className="size-3" />
