@@ -75,6 +75,14 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} min-h-full antialiased`}
     >
       <body className="flex min-h-full flex-col bg-background text-foreground">
+        {/* Skip link — visible on focus for keyboard users */}
+        <a
+          href="#main-content"
+          className="fixed left-4 top-2 z-[100] -translate-y-16 rounded-lg bg-brand px-4 py-2 text-sm font-semibold text-white transition-transform focus:translate-y-0"
+        >
+          Skip to content
+        </a>
+
         <CartProvider>
           <LenisProvider>
             {/* Scroll progress sits above everything, including the navbar */}
@@ -86,7 +94,7 @@ export default function RootLayout({
               pt-16 offsets the fixed navbar height so page content
               starts below it instead of being hidden behind it.
             */}
-            <main className="flex-1 pt-16">{children}</main>
+            <main id="main-content" className="flex-1 pt-16">{children}</main>
             <Footer />
 
             <Toaster
