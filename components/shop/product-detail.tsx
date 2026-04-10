@@ -194,7 +194,7 @@ function AddToCartButton({
   const [isPending, startTrans] = useTransition()
   // useOptimistic: real value is false (not-added), optimistic value flips to
   // true during the transition so the user sees feedback instantly.
-  const [optimisticAdded, setOptimisticAdded] = useOptimistic(false)
+  const [optimisticAdded, setOptimisticAdded] = useOptimistic(false, (_, v: boolean) => v)
 
   function handleClick() {
     if (!inStock || isPending) return

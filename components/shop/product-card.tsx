@@ -50,7 +50,7 @@ export function ProductCard({ product }: { product: ProductCardData }) {
   const { addItem } = useCart()
   const router = useRouter()
   const [isPending, startTransition] = useTransition()
-  const [optimisticAdded, setOptimisticAdded] = useOptimistic(false)
+  const [optimisticAdded, setOptimisticAdded] = useOptimistic(false, (_, v: boolean) => v)
 
   const thumb    = product.images[0]
   const inStock  = product.stock > 0

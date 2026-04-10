@@ -11,8 +11,39 @@ export const alt         = 'Lumina Store — Premium Sound, Elevated'
 // ─── Image ────────────────────────────────────────────────────────────────────
 
 export default function Image() {
-  const buf = readFileSync(join(process.cwd(), 'public/og-image.png'))
-  const src = `data:image/png;base64,${buf.toString('base64')}`
+  let src: string
+
+  try {
+    const buf = readFileSync(join(process.cwd(), 'public/og-image.png'))
+    src = `data:image/png;base64,${buf.toString('base64')}`
+  } catch {
+    // Fallback: render a branded OG image when the static file isn't accessible
+    return new ImageResponse(
+      (
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: '100%',
+            height: '100%',
+            background: 'linear-gradient(135deg, #0A0A0F 0%, #111827 100%)',
+            fontFamily: 'system-ui, sans-serif',
+          }}
+        >
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 16 }}>
+            <span style={{ fontSize: 64, fontWeight: 900, color: '#F0F0F8', letterSpacing: '-2px' }}>
+              Lumina Store
+            </span>
+            <span style={{ fontSize: 24, color: '#6B7280' }}>
+              Premium Sound, Elevated
+            </span>
+          </div>
+        </div>
+      ),
+      { ...size },
+    )
+  }
 
   return new ImageResponse(
     (
