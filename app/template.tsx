@@ -1,6 +1,6 @@
 'use client'
 
-import { motion, type Variants } from 'framer-motion'
+import { motion, useReducedMotion, type Variants } from 'framer-motion'
 
 const page: Variants = {
   hidden:  { opacity: 0, y: 8 },
@@ -12,6 +12,10 @@ const page: Variants = {
  * This makes it the correct place to trigger per-page enter animations.
  */
 export default function Template({ children }: { children: React.ReactNode }) {
+  const reduce = useReducedMotion()
+
+  if (reduce) return <>{children}</>
+
   return (
     <motion.div variants={page} initial="hidden" animate="visible">
       {children}

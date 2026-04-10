@@ -1,6 +1,6 @@
 'use client'
 
-import { motion, type Variants } from 'framer-motion'
+import { motion, useReducedMotion, type Variants } from 'framer-motion'
 import { ProductCard, type ProductCardData } from './product-card'
 
 // ─── Stagger variants ─────────────────────────────────────────────────────────
@@ -24,15 +24,17 @@ interface Props {
 }
 
 export function ProductGrid({ products }: Props) {
+  const reduce = useReducedMotion()
+
   return (
     <motion.div
-      className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-3"
-      variants={container}
-      initial="hidden"
-      animate="visible"
+      className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+      variants={reduce ? undefined : container}
+      initial={reduce ? undefined : 'hidden'}
+      animate={reduce ? undefined : 'visible'}
     >
       {products.map((product) => (
-        <motion.div key={product.id} variants={item}>
+        <motion.div key={product.id} variants={reduce ? undefined : item}>
           <ProductCard product={product} />
         </motion.div>
       ))}

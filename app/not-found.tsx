@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { motion, type Variants } from 'framer-motion'
+import { motion, useReducedMotion, type Variants } from 'framer-motion'
 import { Home, ArrowRight, Headphones } from 'lucide-react'
 
 // ─── Variants ─────────────────────────────────────────────────────────────────
@@ -19,6 +19,8 @@ const item: Variants = {
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
 export default function NotFound() {
+  const reduce = useReducedMotion()
+
   return (
     <div className="relative flex min-h-[calc(100vh-4rem)] items-center justify-center overflow-hidden px-4">
 
@@ -38,26 +40,28 @@ export default function NotFound() {
       </div>
 
       <motion.div
-        variants={container}
-        initial="hidden"
-        animate="visible"
+        variants={reduce ? undefined : container}
+        initial={reduce ? undefined : 'hidden'}
+        animate={reduce ? undefined : 'visible'}
         className="relative z-10 flex flex-col items-center text-center"
       >
         {/* ── Icon ── */}
-        <motion.div variants={item} className="relative mb-8">
+        <motion.div variants={reduce ? undefined : item} className="relative mb-8">
           <div className="flex size-24 items-center justify-center rounded-3xl border border-border/50 bg-card/80 backdrop-blur-sm shadow-[0_0_60px_oklch(0.52_0.22_268/12%)]">
             <Headphones className="size-10 text-brand" />
           </div>
           {/* Ping ring */}
-          <motion.div
-            className="absolute inset-0 rounded-3xl border border-brand/20"
-            animate={{ scale: [1, 1.4], opacity: [0.4, 0] }}
-            transition={{ duration: 2, repeat: Infinity, ease: 'easeOut' }}
-          />
+          {!reduce && (
+            <motion.div
+              className="absolute inset-0 rounded-3xl border border-brand/20"
+              animate={{ scale: [1, 1.4], opacity: [0.4, 0] }}
+              transition={{ duration: 2, repeat: Infinity, ease: 'easeOut' }}
+            />
+          )}
         </motion.div>
 
         {/* ── 404 ── */}
-        <motion.div variants={item} className="relative mb-2">
+        <motion.div variants={reduce ? undefined : item} className="relative mb-2">
           <span
             className="text-gradient select-none text-[clamp(96px,18vw,160px)] font-black leading-none tracking-tighter"
             aria-hidden
@@ -69,7 +73,7 @@ export default function NotFound() {
         </motion.div>
 
         {/* ── Copy ── */}
-        <motion.h1 variants={item} className="mt-4 text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+        <motion.h1 variants={reduce ? undefined : item} className="mt-4 text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
           Nothing here but silence
         </motion.h1>
         <motion.p
@@ -102,7 +106,7 @@ export default function NotFound() {
         </motion.div>
 
         {/* ── Subtle nav hint ── */}
-        <motion.p variants={item} className="mt-8 text-xs text-muted-foreground/60">
+        <motion.p variants={reduce ? undefined : item} className="mt-8 text-xs text-muted-foreground/60">
           If you typed a URL, double-check for typos.
         </motion.p>
       </motion.div>
