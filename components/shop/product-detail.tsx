@@ -3,6 +3,7 @@
 import { useState, useOptimistic, useTransition } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { motion, AnimatePresence, type Variants } from 'framer-motion'
 import {
   ShoppingCart, Check, Minus, Plus, Star,
@@ -250,6 +251,7 @@ function AddToCartButton({
 
 export function ProductDetail({ product }: { product: SerializedProduct }) {
   const { addItem } = useCart()
+  const router = useRouter()
   const [qty, setQty] = useState(1)
   const [selectedVariantId, setSelectedVariantId] = useState<string | null>(
     product.variants[0]?.id ?? null
@@ -283,7 +285,7 @@ export function ProductDetail({ product }: { product: SerializedProduct }) {
 
     toast.success('Added to cart', {
       description: product.name,
-      action: { label: 'View Cart', onClick: () => {} },
+      action: { label: 'View Cart', onClick: () => router.push('/cart') },
     })
   }
 
