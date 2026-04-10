@@ -136,7 +136,7 @@ export function ProductCard({ product }: { product: ProductCardData }) {
 
           {/* Image */}
           <motion.div className="h-full w-full" variants={image}>
-            {thumb ? (
+            {thumb?.url ? (
               <Image
                 src={thumb.url}
                 alt={thumb.alt ?? product.name}
