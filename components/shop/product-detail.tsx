@@ -42,6 +42,7 @@ export type SerializedProduct = {
   images:            Array<{ url: string; alt: string | null; position: number }>
   variants:          Array<{ id: string; name: string; price: number | null; stock: number; image: string | null }>
   category:          { name: string; slug: string }
+  averageRating:     number | null
   _count:            { reviews: number }
 }
 
@@ -338,13 +339,21 @@ export function ProductDetail({ product }: { product: SerializedProduct }) {
           <div className="mt-3 flex flex-wrap items-center gap-4">
             {product._count.reviews > 0 && (
               <div className="flex items-center gap-1.5">
-                <div className="flex" aria-hidden>
-                  {[1, 2, 3, 4, 5].map((s) => (
-                    <Star key={s} className="size-4 fill-yellow-400 text-yellow-400" />
-                  ))}
-                </div>
+                {product.averageRating != null && (
+                  <div className="flex" aria-hidden>
+                    {[1, 2, 3, 4, 5].map((s) => (
+                      <Star
+                        key={s}
+                        className={`size-4 ${s <= Math.round(product.averageRating!) ? 'fill-yellow-400 text-yellow-400' : 'text-border'}`}
+                      />
+                    ))}
+                  </div>
+                )}
                 <span className="text-sm text-muted-foreground">
-                  {product._count.reviews} review{product._count.reviews !== 1 ? 's' : ''}
+                  {product.averageRating != null && (
+                    <span className="font-semibold text-foreground">{product.averageRating.toFixed(1)} </span>
+                  )}
+                  ({product._count.reviews} review{product._count.reviews !== 1 ? 's' : ''})
                 </span>
               </div>
             )}

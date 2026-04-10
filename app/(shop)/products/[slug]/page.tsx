@@ -124,8 +124,16 @@ export default async function ProductPage({
       image: v.image ?? null,
     })),
     category: raw.category,
+    averageRating,
     _count:   raw._count,
   }
+
+  const reviewsList = raw.reviews as Array<{
+    rating: number
+  }>
+  const averageRating = reviewsList.length > 0
+    ? reviewsList.reduce((s: number, r: { rating: number }) => s + r.rating, 0) / reviewsList.length
+    : null
 
   const reviews = raw.reviews as Array<{
     id:      string
