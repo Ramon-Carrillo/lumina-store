@@ -19,9 +19,9 @@ const prisma = new PrismaClient({
 
 // ─── Image helpers ────────────────────────────────────────────────────────────
 
-/** Unsplash photo by ID */
-function img(id: string, alt: string) {
-  return { url: `https://images.unsplash.com/${id}?w=900&q=85&fit=crop`, alt }
+/** Lorem Picsum photo by stable numeric ID — guaranteed available */
+function img(id: number, alt: string) {
+  return { url: `https://picsum.photos/id/${id}/900/900`, alt }
 }
 
 // ─── Main ─────────────────────────────────────────────────────────────────────
@@ -153,9 +153,9 @@ async function main() {
   })
   await prisma.productImage.createMany({
     data: [
-      { productId: proX1.id, position: 0, ...img('photo-1606220588913-b3aacb4d2f37', 'Lumina Pro X1 earbuds in open charging case') },
-      { productId: proX1.id, position: 1, ...img('photo-1583394838336-acd977736f90', 'Lumina Pro X1 earbuds side view') },
-      { productId: proX1.id, position: 2, ...img('photo-1572536147248-ac59a8abfa4b', 'Lumina Pro X1 in-ear closeup') },
+      { productId: proX1.id, position: 0, ...img(26, 'Lumina Pro X1 earbuds in open charging case') },
+      { productId: proX1.id, position: 1, ...img(60, 'Lumina Pro X1 earbuds side view') },
+      { productId: proX1.id, position: 2, ...img(180, 'Lumina Pro X1 in-ear closeup') },
     ],
   })
   await prisma.productVariant.createMany({
@@ -194,8 +194,8 @@ async function main() {
   })
   await prisma.productImage.createMany({
     data: [
-      { productId: air3.id, position: 0, ...img('photo-1606220945770-b5b6c2c55bf1', 'Lumina Air 3 earbuds next to open charging case') },
-      { productId: air3.id, position: 1, ...img('photo-1605464315542-bda3e2f4e605', 'Lumina Air 3 earbuds minimalist flat lay') },
+      { productId: air3.id, position: 0, ...img(96, 'Lumina Air 3 earbuds next to open charging case') },
+      { productId: air3.id, position: 1, ...img(160, 'Lumina Air 3 earbuds minimalist flat lay') },
     ],
   })
   await prisma.productVariant.createMany({
@@ -234,8 +234,8 @@ async function main() {
   })
   await prisma.productImage.createMany({
     data: [
-      { productId: one.id, position: 0, ...img('photo-1558618666-fcd25c85cd64', 'Lumina One earbuds') },
-      { productId: one.id, position: 1, ...img('photo-1585386959984-a4155224a1ad', 'Lumina One earbuds flat lay') },
+      { productId: one.id, position: 0, ...img(119, 'Lumina One earbuds') },
+      { productId: one.id, position: 1, ...img(201, 'Lumina One earbuds flat lay') },
     ],
   })
   await prisma.productVariant.createMany({
@@ -274,7 +274,7 @@ async function main() {
   })
   await prisma.productImage.createMany({
     data: [
-      { productId: beats.id, position: 0, ...img('photo-1618366712010-f4ae9c647dcb', 'Lumina Beats earbuds white') },
+      { productId: beats.id, position: 0, ...img(225, 'Lumina Beats earbuds white') },
     ],
   })
   await prisma.productVariant.createMany({
@@ -314,7 +314,7 @@ async function main() {
   })
   await prisma.productImage.createMany({
     data: [
-      { productId: nano.id, position: 0, ...img('photo-1524678606370-a47ad25cb82a', 'Lumina Nano ultra-compact earbuds') },
+      { productId: nano.id, position: 0, ...img(237, 'Lumina Nano ultra-compact earbuds') },
     ],
   })
   await prisma.productVariant.createMany({
@@ -360,9 +360,9 @@ async function main() {
   })
   await prisma.productImage.createMany({
     data: [
-      { productId: studioPro.id, position: 0, ...img('photo-1505740420928-5e560c06d30e', 'Lumina Studio Pro headphones on desk') },
-      { productId: studioPro.id, position: 1, ...img('photo-1484704849700-f032a568e944', 'Lumina Studio Pro headphones profile') },
-      { productId: studioPro.id, position: 2, ...img('photo-1578319439584-104c94d37305', 'Lumina Studio Pro worn on model') },
+      { productId: studioPro.id, position: 0, ...img(3, 'Lumina Studio Pro headphones on desk') },
+      { productId: studioPro.id, position: 1, ...img(36, 'Lumina Studio Pro headphones profile') },
+      { productId: studioPro.id, position: 2, ...img(63, 'Lumina Studio Pro worn on model') },
     ],
   })
   await prisma.productVariant.createMany({
@@ -402,8 +402,8 @@ async function main() {
   })
   await prisma.productImage.createMany({
     data: [
-      { productId: max.id, position: 0, ...img('photo-1590658268037-6bf12165a8df', 'Lumina Max premium headphones') },
-      { productId: max.id, position: 1, ...img('photo-1546435770-a3e426bf472b', 'Lumina Max worn closeup') },
+      { productId: max.id, position: 0, ...img(7, 'Lumina Max premium headphones') },
+      { productId: max.id, position: 1, ...img(83, 'Lumina Max worn closeup') },
     ],
   })
   await prisma.productVariant.createMany({
@@ -444,8 +444,8 @@ async function main() {
   })
   await prisma.productImage.createMany({
     data: [
-      { productId: flow.id, position: 0, ...img('photo-1524678606370-a47ad25cb82a', 'Lumina Flow on-ear headphones cloud white') },
-      { productId: flow.id, position: 1, ...img('photo-1487215078519-e21cc028cb29', 'Lumina Flow headphones folded') },
+      { productId: flow.id, position: 0, ...img(175, 'Lumina Flow on-ear headphones cloud white') },
+      { productId: flow.id, position: 1, ...img(239, 'Lumina Flow headphones folded') },
     ],
   })
   await prisma.productVariant.createMany({
@@ -488,7 +488,7 @@ async function main() {
   })
   await prisma.productImage.createMany({
     data: [
-      { productId: sportPro.id, position: 0, ...img('photo-1556742049-0cfed4f6a45d', 'Lumina Sport Pro workout earbuds') },
+      { productId: sportPro.id, position: 0, ...img(15, 'Lumina Sport Pro workout earbuds') },
     ],
   })
   await prisma.productVariant.createMany({
@@ -527,7 +527,7 @@ async function main() {
   })
   await prisma.productImage.createMany({
     data: [
-      { productId: run.id, position: 0, ...img('photo-1571019613454-1cb2f99b2d8b', 'Lumina Run open-ear sport earbuds') },
+      { productId: run.id, position: 0, ...img(28, 'Lumina Run open-ear sport earbuds') },
     ],
   })
   await prisma.productVariant.createMany({
@@ -568,8 +568,8 @@ async function main() {
   })
   await prisma.productImage.createMany({
     data: [
-      { productId: sphere.id, position: 0, ...img('photo-1608043152269-423dbba4e7e1', 'Lumina Sphere portable speaker obsidian') },
-      { productId: sphere.id, position: 1, ...img('photo-1516249255568-f8b6a5a52967', 'Lumina Sphere glowing ambient light') },
+      { productId: sphere.id, position: 0, ...img(158, 'Lumina Sphere portable speaker obsidian') },
+      { productId: sphere.id, position: 1, ...img(193, 'Lumina Sphere glowing ambient light') },
     ],
   })
   await prisma.productVariant.createMany({
@@ -603,8 +603,8 @@ async function main() {
   })
   await prisma.productImage.createMany({
     data: [
-      { productId: bar.id, position: 0, ...img('photo-1545454675-3531b543be5d', 'Lumina Bar shelf speaker on desk') },
-      { productId: bar.id, position: 1, ...img('photo-1563330232-57114bb0823c', 'Lumina Bar closeup aluminium grille') },
+      { productId: bar.id, position: 0, ...img(256, 'Lumina Bar shelf speaker on desk') },
+      { productId: bar.id, position: 1, ...img(274, 'Lumina Bar closeup aluminium grille') },
     ],
   })
   await prisma.productVariant.createMany({
@@ -640,7 +640,7 @@ async function main() {
   })
   await prisma.productImage.createMany({
     data: [
-      { productId: eartips.id, position: 0, ...img('photo-1585386959984-a4155224a1ad', 'Lumina memory foam ear tips three sizes') },
+      { productId: eartips.id, position: 0, ...img(341, 'Lumina memory foam ear tips three sizes') },
     ],
   })
   await prisma.productVariant.createMany({
@@ -673,8 +673,8 @@ async function main() {
   })
   await prisma.productImage.createMany({
     data: [
-      { productId: magCase.id, position: 0, ...img('photo-1574920162043-b872873f19c8', 'Lumina MagCase Pro wireless charging case on clean surface') },
-      { productId: magCase.id, position: 1, ...img('photo-1525825691042-e14d9042fc70', 'Lumina MagCase Pro charging case detail view') },
+      { productId: magCase.id, position: 0, ...img(367, 'Lumina MagCase Pro wireless charging case on clean surface') },
+      { productId: magCase.id, position: 1, ...img(399, 'Lumina MagCase Pro charging case detail view') },
     ],
   })
   await prisma.productVariant.createMany({
@@ -717,8 +717,8 @@ async function main() {
   })
   await prisma.productImage.createMany({
     data: [
-      { productId: apex.id, position: 0, ...img('photo-1612198188060-c7c2a3b66eae', 'Lumina Apex gaming headset on desk') },
-      { productId: apex.id, position: 1, ...img('photo-1599669454699-248893623440', 'Lumina Apex gaming headset side view') },
+      { productId: apex.id, position: 0, ...img(42, 'Lumina Apex gaming headset on desk') },
+      { productId: apex.id, position: 1, ...img(111, 'Lumina Apex gaming headset side view') },
     ],
   })
   await prisma.productVariant.createMany({
@@ -755,7 +755,7 @@ async function main() {
   })
   await prisma.productImage.createMany({
     data: [
-      { productId: apexLite.id, position: 0, ...img('photo-1603481588273-2f908a9a7a1b', 'Lumina Apex Lite gaming headset') },
+      { productId: apexLite.id, position: 0, ...img(145, 'Lumina Apex Lite gaming headset') },
     ],
   })
   await prisma.productVariant.createMany({
@@ -796,8 +796,8 @@ async function main() {
   })
   await prisma.productImage.createMany({
     data: [
-      { productId: thread.id, position: 0, ...img('photo-1484704849700-f032a568e944', 'Lumina Thread wired earphones') },
-      { productId: thread.id, position: 1, ...img('photo-1572536147248-ac59a8abfa4b', 'Lumina Thread MMCX cable detail') },
+      { productId: thread.id, position: 0, ...img(453, 'Lumina Thread wired earphones') },
+      { productId: thread.id, position: 1, ...img(471, 'Lumina Thread MMCX cable detail') },
     ],
   })
   await prisma.productVariant.createMany({
@@ -835,8 +835,8 @@ async function main() {
   })
   await prisma.productImage.createMany({
     data: [
-      { productId: arc.id, position: 0, ...img('photo-1545454675-3531b543be5d', 'Lumina Arc soundbar below TV') },
-      { productId: arc.id, position: 1, ...img('photo-1563330232-57114bb0823c', 'Lumina Arc soundbar closeup grille') },
+      { productId: arc.id, position: 0, ...img(497, 'Lumina Arc soundbar below TV') },
+      { productId: arc.id, position: 1, ...img(514, 'Lumina Arc soundbar closeup grille') },
     ],
   })
   await prisma.productVariant.createMany({
@@ -875,8 +875,8 @@ async function main() {
   })
   await prisma.productImage.createMany({
     data: [
-      { productId: stack.id, position: 0, ...img('photo-1558590987-fec611c944de', 'Lumina Stack DAC amp on desk') },
-      { productId: stack.id, position: 1, ...img('photo-1519817650390-64a93db51149', 'Lumina Stack rear connections') },
+      { productId: stack.id, position: 0, ...img(532, 'Lumina Stack DAC amp on desk') },
+      { productId: stack.id, position: 1, ...img(550, 'Lumina Stack rear connections') },
     ],
   })
   await prisma.productVariant.createMany({
