@@ -88,6 +88,12 @@ export default async function ProductPage({
     _count:            p._count,
   }))
 
+  // Compute average rating from reviews
+  const reviewsList = raw.reviews as Array<{ rating: number }>
+  const averageRating = reviewsList.length > 0
+    ? reviewsList.reduce((s: number, r: { rating: number }) => s + r.rating, 0) / reviewsList.length
+    : null
+
   // Serialise every Decimal → number so the Client Component can receive it
   const product: SerializedProduct = {
     id:                raw.id,
@@ -127,13 +133,6 @@ export default async function ProductPage({
     averageRating,
     _count:   raw._count,
   }
-
-  const reviewsList = raw.reviews as Array<{
-    rating: number
-  }>
-  const averageRating = reviewsList.length > 0
-    ? reviewsList.reduce((s: number, r: { rating: number }) => s + r.rating, 0) / reviewsList.length
-    : null
 
   const reviews = raw.reviews as Array<{
     id:      string
