@@ -29,8 +29,8 @@ export type ProductCardData = {
 // ─── Framer Motion variants ───────────────────────────────────────────────────
 
 const card: Variants = {
-  rest:  { y: 0,  transition: { duration: 0.25, ease: 'easeOut' } },
-  hover: { y: -6, transition: { duration: 0.25, ease: 'easeOut' } },
+  rest:  { boxShadow: '0 0 0 rgba(0,0,0,0)',       transition: { duration: 0.25, ease: 'easeOut' } },
+  hover: { boxShadow: '0 8px 30px rgba(0,0,0,0.08)', transition: { duration: 0.25, ease: 'easeOut' } },
 }
 
 const image: Variants = {
