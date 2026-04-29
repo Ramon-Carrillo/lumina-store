@@ -221,10 +221,35 @@
   will-change: transform;
 }
 
+/*
+ * `animation-fill-mode: both` is what makes the staggered fade work
+ * without an `opacity-0` baseline class in the markup. During the
+ * delay the element sits at the FROM keyframe (opacity 0); after
+ * the animation completes it stays at the TO keyframe (opacity 1).
+ */
 .animate-hero-fade {
   animation: hero-fade 750ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 .animate-hero-scroll-cue {
   animation: hero-scroll-cue 1600ms ease-in-out infinite;
+}
+
+/*
+ * Reduced-motion users: skip every hero animation entirely. The
+ * `animation: none` overrides the keyframes for orbs and the scroll
+ * cue (they were decorative anyway). For the fade-in elements we
+ * also force opacity to 1 — without this, `animation-fill-mode: both`
+ * combined with `animation: none` would leave them invisible on the
+ * FROM state.
+ */
+@media (prefers-reduced-motion: reduce) {
+  .animate-orb-drift,
+  .animate-hero-scroll-cue {
+    animation: none;
+  }
+  .animate-hero-fade {
+    animation: none;
+    opacity: 1;
+  }
 }
