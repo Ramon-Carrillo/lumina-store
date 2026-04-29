@@ -10,6 +10,19 @@ const nextConfig: NextConfig = {
   // Strict mode catches subtle React bugs early (dev only cost)
   reactStrictMode: true,
 
+  // ── Bundle optimisation ───────────────────────────────────────────────
+  // Without this, every file that imports from `lucide-react`,
+  // `@base-ui/react`, or `react-icons` ships the entire package's bundle.
+  // With it, Next rewrites the imports per-file at build time so only
+  // the symbols actually used reach the browser. lucide-react alone
+  // goes from ~600 KB unminified to a few KB on the homepage.
+  experimental: {
+    optimizePackageImports: [
+      'lucide-react',
+      '@base-ui/react',
+    ],
+  },
+
   images: {
     // Allow images from common cloud storage / CDN providers.
     // Add / remove patterns to match your actual upload destinations.

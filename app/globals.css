@@ -181,3 +181,50 @@
       0 1px 2px oklch(0 0 0 / 5%);
   }
 }
+
+/*
+ * Hero animations — pure CSS replacements for the framer-motion that
+ * used to drive components/shop/hero.tsx. Keeping them transform /
+ * opacity only (no layout-affecting properties) so the compositor
+ * handles them off the main thread — no forced reflows.
+ *
+ * - `animate-orb-drift`: gentle floating of ambient background blurs.
+ *   The orb duration is overridden inline per-orb via `animationDuration`
+ *   so the three orbs drift at different periods, like the framer
+ *   version. Negative `animation-delay` starts each one mid-cycle,
+ *   matching the original phase offsets.
+ * - `animate-hero-fade`: staggered text fade-up (per-child
+ *   `animation-delay` set inline).
+ * - `animate-hero-scroll-cue`: the small dot inside the scroll
+ *   indicator at the bottom of the hero.
+ *
+ * All three are gated behind `motion-safe:` in markup, so users with
+ * `prefers-reduced-motion` see the static end-state on first paint.
+ */
+@keyframes orb-drift {
+  0%, 100% { transform: translate3d(0, 0, 0)        scale(1);    }
+  50%      { transform: translate3d(18px, -36px, 0) scale(1.06); }
+}
+
+@keyframes hero-fade {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0);    }
+}
+
+@keyframes hero-scroll-cue {
+  0%, 100% { transform: translateY(0);    opacity: 1;   }
+  50%      { transform: translateY(14px); opacity: 0.3; }
+}
+
+.animate-orb-drift {
+  animation: orb-drift 11s ease-in-out infinite;
+  will-change: transform;
+}
+
+.animate-hero-fade {
+  animation: hero-fade 750ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.animate-hero-scroll-cue {
+  animation: hero-scroll-cue 1600ms ease-in-out infinite;
+}
