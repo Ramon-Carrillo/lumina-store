@@ -33,9 +33,12 @@ export function ProductGrid({ products }: Props) {
       initial={reduce ? undefined : 'hidden'}
       animate={reduce ? undefined : 'visible'}
     >
-      {products.map((product) => (
+      {products.map((product, i) => (
         <motion.div key={product.id} variants={reduce ? undefined : item}>
-          <ProductCard product={product} />
+          {/* First 4 cards are above the fold on the widest grid layout
+              (xl:grid-cols-4) — eager-load their thumbnails so the LCP
+              candidate is preloaded instead of lazy-loaded. */}
+          <ProductCard product={product} priority={i < 4} />
         </motion.div>
       ))}
     </motion.div>

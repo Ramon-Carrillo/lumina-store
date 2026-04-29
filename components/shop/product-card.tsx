@@ -46,7 +46,19 @@ const label: Variants = {
 
 // ─── Component ────────────────────────────────────────────────────────────────
 
-export function ProductCard({ product }: { product: ProductCardData }) {
+/**
+ * `priority` should be true for cards above the fold (typically the
+ * first 3-4 in the grid). It sets `loading="eager"` + `fetchPriority="high"`
+ * on the image so Next preloads the LCP candidate. Without it, Next
+ * logs an LCP warning in dev for whichever product image gets the
+ * "Largest Contentful Paint" treatment.
+ */
+interface ProductCardProps {
+  product: ProductCardData
+  priority?: boolean
+}
+
+export function ProductCard({ product, priority = false }: ProductCardProps) {
   const { addItem } = useCart()
   const router = useRouter()
   const [isPending, startTransition] = useTransition()
@@ -134,13 +146,17 @@ export function ProductCard({ product }: { product: ProductCardData }) {
             </div>
           )}
 
-          {/* Image */}
-          <motion.div className="h-full w-full" variants={image}>
+          {/* Image — `relative` is required because <ProductImage fill>
+              looks at its *direct* parent for positioning context, not
+              an ancestor. Without it Next emits a runtime warning and
+              the image may collapse to 0×0. */}
+          <motion.div className="relative h-full w-full" variants={image}>
             {thumb?.url ? (
               <ProductImage
                 src={thumb.url}
                 alt={thumb.alt ?? product.name}
                 fill
+                priority={priority}
                 className="object-cover"
                 sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
               />

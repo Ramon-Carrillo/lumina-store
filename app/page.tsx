@@ -111,8 +111,11 @@ function FeaturedProducts({ products }: { products: ProductCardData[] }) {
 
         {/* Grid */}
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {products.map((product) => (
-            <ProductCard key={product.id} product={product} />
+          {products.map((product, i) => (
+            // The featured row sits below the hero — only the first
+            // image (or two on tablet) realistically becomes LCP, but
+            // priority on all 4 is cheap and removes the warning.
+            <ProductCard key={product.id} product={product} priority={i < 4} />
           ))}
         </div>
 
