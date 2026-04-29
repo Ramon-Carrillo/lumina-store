@@ -1,6 +1,13 @@
 "use client"
 
-import { createContext, useContext, useReducer, type ReactNode } from "react"
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useMemo,
+  useReducer,
+  type ReactNode,
+} from "react"
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -90,25 +97,45 @@ const CartContext = createContext<CartContextValue | null>(null)
 export function CartProvider({ children }: { children: ReactNode }) {
   const [state, dispatch] = useReducer(cartReducer, { items: [] })
 
-  const itemCount = state.items.reduce((sum, i) => sum + i.quantity, 0)
-  const total = state.items.reduce((sum, i) => sum + i.price * i.quantity, 0)
-
-  return (
-    <CartContext.Provider
-      value={{
-        items: state.items,
-        itemCount,
-        total,
-        addItem: (product) => dispatch({ type: "ADD", product }),
-        removeItem: (id, variantId) => dispatch({ type: "REMOVE", id, variantId }),
-        updateQty: (id, quantity, variantId) =>
-          dispatch({ type: "UPDATE_QTY", id, variantId, quantity }),
-        clearCart: () => dispatch({ type: "CLEAR" }),
-      }}
-    >
-      {children}
-    </CartContext.Provider>
+  // Handlers are wrapped in `useCallback` (with `[]` deps — `dispatch` is
+  // stable per React) so their references don't change across renders.
+  // Without this, every consumer that lists a handler in a `useEffect`
+  // dependency array would re-run on every parent render — which is what
+  // caused the success-page infinite loop in `<ClearCart>`.
+  const addItem = useCallback(
+    (product: CartProduct) => dispatch({ type: "ADD", product }),
+    [],
   )
+  const removeItem = useCallback(
+    (id: string, variantId?: string) =>
+      dispatch({ type: "REMOVE", id, variantId }),
+    [],
+  )
+  const updateQty = useCallback(
+    (id: string, quantity: number, variantId?: string) =>
+      dispatch({ type: "UPDATE_QTY", id, variantId, quantity }),
+    [],
+  )
+  const clearCart = useCallback(() => dispatch({ type: "CLEAR" }), [])
+
+  // Memoising the context value means the provider only emits a new value
+  // when `state` actually changes, preventing avoidable re-renders in
+  // every consumer.
+  const value = useMemo<CartContextValue>(() => {
+    const itemCount = state.items.reduce((sum, i) => sum + i.quantity, 0)
+    const total = state.items.reduce((sum, i) => sum + i.price * i.quantity, 0)
+    return {
+      items: state.items,
+      itemCount,
+      total,
+      addItem,
+      removeItem,
+      updateQty,
+      clearCart,
+    }
+  }, [state.items, addItem, removeItem, updateQty, clearCart])
+
+  return <CartContext.Provider value={value}>{children}</CartContext.Provider>
 }
 
 export function useCart() {

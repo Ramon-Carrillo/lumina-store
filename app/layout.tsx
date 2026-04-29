@@ -73,8 +73,19 @@ export default function RootLayout({
     <html
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} min-h-full antialiased`}
+      suppressHydrationWarning
     >
-      <body className="flex min-h-full flex-col bg-background text-foreground">
+      {/* `suppressHydrationWarning` on <body> silences the false-positive
+          mismatch caused by browser extensions (ColorZilla, Grammarly,
+          LastPass, etc.) injecting attributes like `cz-shortcut-listen`
+          into <body> before React hydrates. The flag is shallow — it
+          only ignores attribute drift on this exact element, not its
+          children — so real hydration bugs deeper in the tree still
+          surface. */}
+      <body
+        className="flex min-h-full flex-col bg-background text-foreground"
+        suppressHydrationWarning
+      >
         {/* Skip link — visible on focus for keyboard users */}
         <a
           href="#main-content"
