@@ -19,9 +19,15 @@ const prisma = new PrismaClient({
 
 // ─── Image helpers ────────────────────────────────────────────────────────────
 
-/** Lorem Picsum photo by stable numeric ID — guaranteed available */
+/**
+ * Local product image by numeric ID. The original Lorem Picsum photos
+ * have been downloaded into `public/products/<id>.jpg` so the live
+ * site doesn't depend on an external image host. To regenerate or
+ * swap an image, replace the file at `public/products/<id>.jpg`
+ * (Next.js's image optimiser will pick it up — no schema change).
+ */
 function img(id: number, alt: string) {
-  return { url: `https://picsum.photos/id/${id}/900/900`, alt }
+  return { url: `/products/${id}.jpg`, alt }
 }
 
 // ─── Main ─────────────────────────────────────────────────────────────────────

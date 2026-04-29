@@ -43,11 +43,9 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: 'placehold.co',
       },
-      // Lorem Picsum — reliable photo placeholders for seeded data
-      {
-        protocol: 'https',
-        hostname: 'picsum.photos',
-      },
+      // Lorem Picsum is no longer used at runtime — product images are
+      // served locally from `public/products/<id>.jpg`. Re-add this
+      // pattern only if a future seed reverts to remote placeholders.
     ],
 
     // Ship modern formats by default
